@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    class Need
+    public class Need
     {
         public string name;
         public double EnjoymentCurve(int ammount)

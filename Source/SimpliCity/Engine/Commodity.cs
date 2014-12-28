@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public class Technology
+    public class Commodity
     {
         public string name;
-        public int labourNeeded;
-        public IDictionary<Commodity, int> input;
-        public IDictionary<Commodity, int> output;
+        public Need need;
     }
 }

@@ -6,27 +6,103 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    class Market
+    public class Market
     {
-        public string name;
-        public IDictionary<Commodity, decimal> lastPrices = new Dictionary<Commodity, decimal>();
-        public List<SellOffer> sellOffers = new List<SellOffer>();
+        public string Name { get; private set; }
 
-        //public decimal PriceBuyOffer(Commodity commodity, int ammount) // TODO: TEST IT!
-        //{
-        //    int currNeeded = ammount;
-        //    var matchingOffers = sellOffers.Where(x => x.commodity == commodity);
+        public Market(string name)
+        {
+            Name = name;
+        }
 
-        //    if (matchingOffers.Sum(x => x.ammount) < ammount)
-        //        throw new ApplicationException();
+        // when company gives sell offer to something, it is actually moved to market
+        public void addSellOffer(SellOffer offer)
+        {
+            if (!offer.seller.commodities.ContainsKey(offer.commodity))
+                throw new ApplicationException();
+            if (offer.seller.commodities[offer.commodity] < offer.ammount)
+                throw new ApplicationException();
 
-        //    while (currNeeded > 0)
-        //    {
-        //        var minPrice = matchingOffers.Min(x => x.price);    
-        //        var minPriceOffers = matchingOffers.Where(x => x.price == minPrice);
+            sellOffers.Add(offer);
+            offer.seller.commodities[offer.commodity] -= offer.ammount;
+        }
 
-        //        if (minPriceOffers.Sum)
-        //    }
-        //}
+        // it's O(n^2) - can be optimized easily
+        public decimal PriceBuyOffer(Commodity commodity, int ammount)
+        {
+            int currNeeded = ammount;
+
+            var matchingOffers = sellOffers.Where(x => x.commodity == commodity).ToList();
+
+            if (matchingOffers.Sum(x => x.ammount) < ammount)
+                throw new ApplicationException();
+
+            decimal currPrice = 0;
+            while (currNeeded > 0)
+            {
+                var minPriceOffer = matchingOffers.MinElement(x => x.price);
+                if (minPriceOffer.ammount < currNeeded)
+                {
+                    currPrice += minPriceOffer.ammount * minPriceOffer.price;
+                    currNeeded -= minPriceOffer.ammount;
+                }
+                else
+                {
+                    currPrice += currNeeded * minPriceOffer.price;
+                    currNeeded -= currNeeded;
+                }
+                matchingOffers.Remove(minPriceOffer);
+            }
+
+            Console.WriteLine("Market have {0} priced {1} of {2} to {3}",
+                Name, ammount.ToString(), commodity.name, currPrice);
+
+            return currPrice;
+        }
+
+        public int GetCommodityAvailable(Commodity commodity)
+        {
+            return sellOffers.Where(x => x.commodity == commodity).Sum(x => x.ammount);
+        }
+
+        // it is almost a copy of PriceBuyOffer
+        public void MakeBuyOffer(Commodity commodity, int ammount, Company buyer)
+        {
+            int currNeeded = ammount;
+
+            var matchingOffers = sellOffers.Where(x => x.commodity == commodity).ToList();
+
+            if (matchingOffers.Sum(x => x.ammount) < ammount)
+                throw new ApplicationException();
+
+            while (currNeeded > 0)
+            {
+                var minPriceOffer = matchingOffers.MinElement(x => x.price);
+                if (minPriceOffer.ammount < currNeeded)
+                {
+                    minPriceOffer.FinalizeOffer(buyer);
+                    matchingOffers.Remove(minPriceOffer);
+                    sellOffers.Remove(minPriceOffer);
+                    currNeeded -= minPriceOffer.ammount;
+                }
+                else
+                {
+                    minPriceOffer.FinalizeOfferPartially(buyer, currNeeded);
+                    currNeeded -= currNeeded;
+                }
+            }
+        }
+
+        private void FinalizeOffer(SellOffer offer, Company buyer)
+        {
+            decimal moneyToTransfer = offer.price * offer.ammount;
+            buyer.money -= moneyToTransfer;
+            offer.seller.money += moneyToTransfer; //TODO: make TransferMoney feature for companies/citizens
+
+            buyer.commodities[offer.commodity] += offer.ammount;
+        }
+        
+
+        private List<SellOffer> sellOffers = new List<SellOffer>();
     }
 }
