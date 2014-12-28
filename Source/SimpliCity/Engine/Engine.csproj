@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetsOwner.cs" />
+    <Compile Include="BuissnessStrategy.cs" />
     <Compile Include="Citizen.cs" />
     <Compile Include="City.cs" />
     <Compile Include="Commodity.cs" />

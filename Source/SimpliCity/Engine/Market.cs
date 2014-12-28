@@ -65,8 +65,7 @@ namespace Engine
             return sellOffers.Where(x => x.commodity == commodity).Sum(x => x.ammount);
         }
 
-        // it is almost a copy of PriceBuyOffer
-        public void MakeBuyOffer(Commodity commodity, int ammount, Company buyer)
+        public void MakeBuyOffer(Commodity commodity, int ammount, AssetsOwner buyer)
         {
             int currNeeded = ammount;
 
@@ -92,16 +91,6 @@ namespace Engine
                 }
             }
         }
-
-        private void FinalizeOffer(SellOffer offer, Company buyer)
-        {
-            decimal moneyToTransfer = offer.price * offer.ammount;
-            buyer.money -= moneyToTransfer;
-            offer.seller.money += moneyToTransfer; //TODO: make TransferMoney feature for companies/citizens
-
-            buyer.commodities[offer.commodity] += offer.ammount;
-        }
-        
 
         private List<SellOffer> sellOffers = new List<SellOffer>();
     }
