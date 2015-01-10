@@ -13,6 +13,14 @@ namespace Engine
         public decimal price;
         public Company seller;
 
+        public SellOffer(Commodity _commodity, int _ammount, decimal _price, Company _seller)
+        {
+            commodity = _commodity;
+            ammount = _ammount;
+            price = _price;
+            seller = _seller;
+        }
+
         private bool finalized = false;
 
         public void FinalizeOffer(AssetsOwner buyer)  // TODO: test it!

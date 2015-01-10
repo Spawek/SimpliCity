@@ -22,7 +22,7 @@ namespace Engine
             employee.job = this;
         }
 
-        private BuissnessStrategy strategy;
+        public BuissnessStrategy strategy;
         public void BuyAndProduce()
         {
             strategy.BuyAndProduce();

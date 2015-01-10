@@ -17,21 +17,19 @@ namespace EngineTests
         {
             seller.commodities.Add(grain, 15);
 
-            SellOffer grainSellOffer1 = new SellOffer()
-            {
-                ammount = 10,
-                commodity = grain,
-                price = 2,
-                seller = seller
-            };
+            SellOffer grainSellOffer1 = new SellOffer(
+                _ammount: 10,
+                _commodity: grain,
+                _price: 2,
+                _seller: seller
+            );
 
-            SellOffer grainSellOffer2 = new SellOffer()
-            {
-                ammount = 5,
-                commodity = grain,
-                price = 1,
-                seller = seller
-            };
+            SellOffer grainSellOffer2 = new SellOffer(
+                _ammount: 5,
+                _commodity: grain,
+                _price: 1,
+                _seller: seller
+            );
 
 
             market.addSellOffer(grainSellOffer1);
@@ -61,13 +59,12 @@ namespace EngineTests
         {
             seller.commodities.Add(meat, 100);
 
-            SellOffer meatSellOffer = new SellOffer()
-            {
-                ammount = 60,
-                commodity = meat,
-                price = 10,
-                seller = seller
-            };
+            SellOffer meatSellOffer = new SellOffer(
+                _ammount: 60,
+                _commodity: meat,
+                _price: 10,
+                _seller: seller
+            );
 
             Assert.AreEqual(100, seller.commodities[meat]);
             market.addSellOffer(meatSellOffer);
@@ -88,6 +85,14 @@ namespace EngineTests
             Assert.AreEqual(5, market.GetCommodityAvailable(grain));
         }
 
+        [TestMethod]
+        public void CalcMaxAmmountAvailableForGivenPriceTest()
+        {
+            decimal maxPrice = 8M;
+            int actualAavailable = market.CalcMaxAmmountAvailableToBuyForGivenPrice(grain, maxPrice);
+            int expectedAvailable = 6;
 
+            Assert.AreEqual(expectedAvailable, actualAavailable);
+        }
     }
 }

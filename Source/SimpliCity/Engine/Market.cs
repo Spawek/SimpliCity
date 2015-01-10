@@ -25,6 +25,9 @@ namespace Engine
 
             sellOffers.Add(offer);
             offer.seller.commodities[offer.commodity] -= offer.ammount;
+
+            Console.WriteLine(String.Format("On market {0}, {1} wants to sell {2} of {3} for {4} per one",
+                Name, offer.seller.name, offer.ammount.ToString(), offer.commodity.name, offer.price.ToString()));
         }
 
         // it's O(n^2) - can be optimized easily
@@ -90,6 +93,23 @@ namespace Engine
                     currNeeded -= currNeeded;
                 }
             }
+        }
+
+        public int CalcMaxAmmountAvailableToBuyForGivenPrice( //CAN BE OPTIMIZED EASILY
+            Commodity commodity, decimal maxPrice)
+        {
+            if (sellOffers.Where(x => x.commodity == commodity).Sum(x => x.ammount * x.price) < maxPrice)
+                return sellOffers.Where(x => x.commodity == commodity).Sum(x => x.ammount);
+
+            decimal currPrice = 0M;
+            int currAmmount = 0;
+            while (currPrice < maxPrice)
+            {
+                currAmmount++;
+                currPrice = PriceBuyOffer(commodity, currAmmount);
+            }
+            int ammountToBuy = currAmmount - 1;
+            return ammountToBuy;
         }
 
         private List<SellOffer> sellOffers = new List<SellOffer>();

@@ -5,28 +5,17 @@ using System.Text;
 
 namespace Engine
 {
-    public class BuissnessStrategy
+    public abstract class BuissnessStrategy
     {
-        private Company company;
-
         public BuissnessStrategy(Company c)
         {
             company = c;
         }
 
-        public void BuyAndProduce()
-        {
-            throw new NotImplementedException();
-        }
+        protected Company company;
 
-        public void SellAssets()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void PayDividend()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void BuyAndProduce();
+        public abstract void SellAssets();
+        public abstract void PayDividend();
     }
 }

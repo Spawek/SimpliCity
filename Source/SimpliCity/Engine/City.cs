@@ -40,17 +40,17 @@ namespace Engine
             Market halaTargowa = new Market("Hala Targowa");
             markets.Add(halaTargowa);
 
-            citizens.Add(new Citizen()
-            {
-                name = "Janusz",
-                money = 50
-            });
+            citizens.Add(new SimpleCitizen(
+                name: "Janusz",
+                money: 50,
+                city: this
+            ));
 
-            citizens.Add(new Citizen()
-            {
-                name = "Grażyna",
-                money = 100
-            });
+            citizens.Add(new SimpleCitizen(
+                name: "Grażyna",
+                money: 100,
+                city: this
+            ));
 
             Need hunger = new Need()
             {
@@ -66,18 +66,6 @@ namespace Engine
             };
             commodities.Add(grain);
 
-            Company biznesJanusza = new Company()
-            {
-                name = "Biznes Janusza",
-                money = 50,
-                shareholders = new Dictionary<AssetsOwner, decimal>() { { GetCitizen("Janusz"), 1 } },
-                city = this,
-                market = GetMarket("Hala Targowa"),
-                commodities = new Dictionary<Commodity, int>() { {grain, 20} }
-            };
-            biznesJanusza.Hire(GetCitizen("Grażyna"), 10);
-            companies.Add(biznesJanusza);
-
             Technology grainPlantation = new Technology()
             {
                 name = "grain plantation",
@@ -86,6 +74,19 @@ namespace Engine
                 output = new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } }
             };
             commonTechnologies.Add(grainPlantation);
+
+            Company biznesJanusza = new Company()
+            {
+                name = "Biznes Janusza",
+                money = 50,
+                shareholders = new Dictionary<AssetsOwner, decimal>() { { GetCitizen("Janusz"), 1 } },
+                city = this,
+                market = GetMarket("Hala Targowa"),
+                commodities = new Dictionary<Commodity, int>() { { grain, 20 } }
+            };
+            biznesJanusza.Hire(GetCitizen("Grażyna"), 10);
+            biznesJanusza.strategy = new SingleProductionStrategy(biznesJanusza, grainPlantation);
+            companies.Add(biznesJanusza);
         }
     }
 }
