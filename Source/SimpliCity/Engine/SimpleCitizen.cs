@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    class SimpleCitizen : Citizen
+    public class SimpleCitizen : Citizen
     {
         public SimpleCitizen(string name, City city, decimal money)
             : base(name, city, money)

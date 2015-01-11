@@ -6,6 +6,22 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
+    /*
+     * TODO:
+     *  - add government
+     *      - taxes
+     *      - money priting / destroying
+     *      - social system
+     *  - technologing evolution (research?)
+     *  - machines needed for production
+     *  - currencies
+     *  - banks
+     *  - children
+     *  - death
+     *  - bancrucy
+     *  - trade between markets
+     *  - transport price
+     */
     class Program
     {
         static void Main(string[] args)

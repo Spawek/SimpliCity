@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//namespace Engine
-//{
+namespace Engine
+{
     public static class Tools
     {
         public static T MinElement<T, R>(this IEnumerable<T> container, Func<T, R> valuingFoo) where R : IComparable
@@ -54,4 +54,4 @@ using System.Threading.Tasks;
             return maxElem;
         }
     }
-//}
+}

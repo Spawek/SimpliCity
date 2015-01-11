@@ -6,47 +6,60 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
+    /*
+     * machines can be part of input - they dont need separate field - e.g.
+     *      cow -> cow + milk
+     */
     public class Technology
     {
-        public string name;
-        public int labourNeeded;
-        public IDictionary<Commodity, int> input;
-        public IDictionary<Commodity, int> output;
-
-        public void Produce(Company c, int times)
+        public Technology(string name, int labourNeeded,
+            IDictionary<Commodity, int> input, IDictionary<Commodity, int> output)
         {
-            Console.WriteLine("Company {0} uses {1} technology {2} times",
-                c.Name, name, times);
-            UseResources(c, times);
-            GiveOutput(c, times);
+            Name = name;
+            LabourNeeded = labourNeeded;
+            Input = input;
+            Output = output;
         }
 
-        private void GiveOutput(Company c, int times)
+        public string Name { get; private set; }
+        public int LabourNeeded { get; private set; }
+        public IDictionary<Commodity, int> Input { get; private set; }
+        public IDictionary<Commodity, int> Output { get; private set; }
+
+        public void Produce(Company company, int times)
         {
-            foreach (var item in output)
+            Console.WriteLine("Company {0} uses {1} technology {2} times",
+                company.Name, Name, times);
+            UseResources(company, times);
+            GiveOutput(company, times);
+        }
+
+        private void GiveOutput(Company company, int times)
+        {
+            foreach (var item in Output)
             {
                 int commodityProduced = item.Value * times;
 
-                if (!c.commodities.ContainsKey(item.Key))
+                if (!company.commodities.ContainsKey(item.Key))
                 {
-                    c.commodities.Add(item.Key, 0);
+                    company.commodities.Add(item.Key, 0);
                 }
-                c.commodities[item.Key] += commodityProduced;
+                company.commodities[item.Key] += commodityProduced;
             }
         }
 
-        private void UseResources(Company c, int times)
+        private void UseResources(Company company, int times)
         {
-            foreach (var item in input)
+            foreach (var item in Input)
             {
                 int commodityNeeded = item.Value * times;
 
-                if (!c.commodities.ContainsKey(item.Key))
+                if (!company.commodities.ContainsKey(item.Key))
                     throw new ApplicationException();
-                if (c.commodities[item.Key] < commodityNeeded)
+                if (company.commodities[item.Key] < commodityNeeded)
                     throw new ApplicationException();
 
-                c.commodities[item.Key] -= commodityNeeded;
+                company.commodities[item.Key] -= commodityNeeded;
             }
         }
     }

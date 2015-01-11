@@ -31,7 +31,7 @@ namespace Engine
 
         private void BuyGoodsForProduction(Technology production, int productionSize)
         {
-            foreach (var item in production.input)
+            foreach (var item in production.Input)
             {
                 int countNeeded = item.Value * productionSize - Company.commodities[item.Key];
                 Company.Market.MakeBuyOffer(item.Key, countNeeded, Company);
@@ -42,7 +42,7 @@ namespace Engine
         {
             var market = company.Market;
             int maxProductionPossible = int.MaxValue;
-            foreach (var c in production.input)
+            foreach (var c in production.Input)
             {
                 var currCommodityAvailable = market.GetCommodityAvailable(c.Key);
                 if (currCommodityAvailable != 0)
@@ -51,7 +51,7 @@ namespace Engine
                 }
             }
 
-            maxProductionPossible = Math.Min(maxProductionPossible, company.Employees.Count / production.labourNeeded);
+            maxProductionPossible = Math.Min(maxProductionPossible, company.Employees.Count / production.LabourNeeded);
             return maxProductionPossible;
         }
 
@@ -61,9 +61,9 @@ namespace Engine
             {
                 int ammountPossessed = Company.commodities[commodity];
                 int ammountToSell = 0;
-                if (production.input.ContainsKey(commodity))
+                if (production.Input.ContainsKey(commodity))
                 {
-                    int ammountNeeded = production.input[commodity] * wantedProductionSize;
+                    int ammountNeeded = production.Input[commodity] * wantedProductionSize;
                     ammountToSell = ammountPossessed - ammountNeeded;
                 }
                 else

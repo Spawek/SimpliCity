@@ -8,10 +8,10 @@ namespace EngineTests
     [TestClass]
     public class MarketTests
     {
-        Commodity grain = new Commodity();
-        Commodity meat = new Commodity();
+        Commodity grain = new Commodity("grain", null);
+        Commodity meat = new Commodity("meat", null);
         Market market = new Market("Market1");
-        Company seller = new Company();
+        Company seller = new Company("seller", null, null, null);
         
         public MarketTests()
         {
@@ -74,8 +74,9 @@ namespace EngineTests
         [TestMethod]
         public void MakeBuyOfferTest()
         {
-            Company buyer = new Company();
-            buyer.money = 50;
+            Citizen c = new SimpleCitizen("some rich guy", null, decimal.MaxValue);
+            Company buyer = new Company("Company", null, null, null);
+            c.TransferMoney(buyer, 50M);
 
             market.MakeBuyOffer(grain, 10, buyer);
 

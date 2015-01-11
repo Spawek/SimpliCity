@@ -65,13 +65,12 @@ namespace Engine
             );
             commodities.Add(grain);
 
-            Technology grainPlantation = new Technology()
-            {
-                name = "grain plantation",
-                labourNeeded = 1,
-                input = new Dictionary<Commodity, int>() { { GetCommodity("grain"), 10 } },
-                output = new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } }
-            };
+            Technology grainPlantation = new Technology(
+                name: "grain plantation",
+                labourNeeded: 1,
+                input: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 10 } },
+                output: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } }
+            );
             commonTechnologies.Add(grainPlantation);
 
             Company biznesJanusza = new Company(
