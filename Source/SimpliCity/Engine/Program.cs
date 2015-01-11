@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 namespace Engine
 {
     /*
+     * FOR NOW TODO:
+     * - job market
+     * - needs
+     * - companies creation
+     * - sell prices changes
+     *      - market history prices
+     * 
+     * 
      * TODO:
      *  - add government
      *      - taxes
