@@ -72,7 +72,7 @@ namespace Engine
 
                 if (ammountToSell != 0)
                 {
-                    Company.Market.addSellOffer(new SellOfferWithDiscountPerTurn(
+                    Company.Market.AddSellOffer(new SellOfferWithDiscountPerTurn(
                         commodity: commodity,
                         price: 4, //TODO: pricing model
                         ammount: ammountToSell,

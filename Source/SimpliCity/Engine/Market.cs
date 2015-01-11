@@ -16,7 +16,7 @@ namespace Engine
         }
 
         // when company gives sell offer to something, it is actually moved to market
-        public void addSellOffer(SellOffer offer)
+        public void AddSellOffer(SellOffer offer)
         {
             if (!offer.Seller.commodities.ContainsKey(offer.Commodity))
                 throw new ApplicationException();
@@ -26,7 +26,7 @@ namespace Engine
             sellOffers.Add(offer);
             offer.Seller.commodities[offer.Commodity] -= offer.Ammount;
 
-            Console.WriteLine(String.Format("On market {0}, {1} wants to sell {2} of {3} for {4} per one",
+            Console.WriteLine(String.Format("On market {0} {1} wants to sell {2} of {3} for {4} per one",
                 Name, offer.Seller.Name, offer.Ammount.ToString(), offer.Commodity.Name, offer.Price.ToString()));
         }
 

@@ -32,8 +32,8 @@ namespace EngineTests
             );
 
 
-            market.addSellOffer(grainSellOffer1);
-            market.addSellOffer(grainSellOffer2);
+            market.AddSellOffer(grainSellOffer1);
+            market.AddSellOffer(grainSellOffer2);
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace EngineTests
             );
 
             Assert.AreEqual(100, seller.commodities[meat]);
-            market.addSellOffer(meatSellOffer);
+            market.AddSellOffer(meatSellOffer);
             Assert.AreEqual(40, seller.commodities[meat]);
         }
 
