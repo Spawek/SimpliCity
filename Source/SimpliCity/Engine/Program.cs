@@ -27,14 +27,15 @@ namespace Engine
         static void Main(string[] args)
         {
             City simpliCity = new City();
+            TurnCounter counter = new TurnCounter();
+            TurnCounter.RegisterCounter(counter);
 
-            int turnNo = 1;
             while (true)
             {
-                Console.WriteLine("TURN {0} BEGINS!", turnNo);
+                Console.WriteLine("TURN {0} BEGINS!", TurnCounter.Now);
                 MakeTurn(simpliCity);
-                Console.WriteLine("TURN {0} ENDS!", turnNo);
-                turnNo++;
+                Console.WriteLine("TURN {0} ENDS!", TurnCounter.Now);
+                counter.IncrementCounter();
             }
         }
 

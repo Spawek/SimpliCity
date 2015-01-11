@@ -17,18 +17,18 @@ namespace EngineTests
         {
             seller.commodities.Add(grain, 15);
 
-            SellOffer grainSellOffer1 = new SellOffer(
-                _ammount: 10,
-                _commodity: grain,
-                _price: 2,
-                _seller: seller
+            var grainSellOffer1 = new StableSellOffer(
+                ammount: 10,
+                commodity: grain,
+                price: 2,
+                seller: seller
             );
 
-            SellOffer grainSellOffer2 = new SellOffer(
-                _ammount: 5,
-                _commodity: grain,
-                _price: 1,
-                _seller: seller
+            var grainSellOffer2 = new StableSellOffer(
+                ammount: 5,
+                commodity: grain,
+                price: 1,
+                seller: seller
             );
 
 
@@ -59,11 +59,11 @@ namespace EngineTests
         {
             seller.commodities.Add(meat, 100);
 
-            SellOffer meatSellOffer = new SellOffer(
-                _ammount: 60,
-                _commodity: meat,
-                _price: 10,
-                _seller: seller
+            var meatSellOffer = new StableSellOffer(
+                ammount: 60,
+                commodity: meat,
+                price: 10,
+                seller: seller
             );
 
             Assert.AreEqual(100, seller.commodities[meat]);

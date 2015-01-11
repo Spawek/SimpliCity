@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public class SellOffer
+    public abstract class SellOffer
     {
         public Commodity Commodity { get; private set; }
         public int Ammount { get; private set; }
-        public decimal Price { get; private set; }
+        public abstract decimal Price { get; }
         public Company Seller { get; private set; }
 
-        public SellOffer(Commodity _commodity, int _ammount, decimal _price, Company _seller)
+        public SellOffer(Commodity commodity, int ammount, Company seller)
         {
-            Commodity = _commodity;
-            Ammount = _ammount;
-            Price = _price;
-            Seller = _seller;
+            Commodity = commodity;
+            Ammount = ammount;
+            Seller = seller;
         }
 
         private bool finalized = false;

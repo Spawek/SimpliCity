@@ -75,11 +75,12 @@ namespace Engine
 
                 if (ammountToSell != 0)
                 {
-                    Company.Market.addSellOffer(new SellOffer(
-                        _commodity: commodity,
-                        _price: 4, //TODO: pricing model
-                        _ammount: ammountToSell,
-                        _seller: Company));
+                    Company.Market.addSellOffer(new SellOfferWithDiscountPerTurn(
+                        commodity: commodity,
+                        price: 4, //TODO: pricing model
+                        ammount: ammountToSell,
+                        seller: Company,
+                        discount: 0.05));
                 }
             }
         }
