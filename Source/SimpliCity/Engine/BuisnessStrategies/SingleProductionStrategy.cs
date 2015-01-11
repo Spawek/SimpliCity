@@ -43,17 +43,14 @@ namespace Engine
         private static int GetMaxProductionSize(Company company, Technology production)
         {
             var market = company.Market;
-            int maxProductionPossible = int.MaxValue;
+            int maxProductionPossible = company.Employees.Count / production.LabourNeeded;
             foreach (var c in production.Input)
             {
-                var currCommodityAvailable = market.GetCommodityAvailable(c.Key);
-                if (currCommodityAvailable != 0)
-                {
-                    maxProductionPossible = Math.Min(maxProductionPossible, c.Value / currCommodityAvailable);
-                }
+                var commodityAvailableOnMarket = market.GetCommodityAvailable(c.Key);
+                var commodityAvailable = commodityAvailableOnMarket + company.commodities[c.Key];
+                maxProductionPossible = Math.Min(maxProductionPossible, commodityAvailable / c.Value);
             }
-
-            maxProductionPossible = Math.Min(maxProductionPossible, company.Employees.Count / production.LabourNeeded);
+            
             return maxProductionPossible;
         }
 
