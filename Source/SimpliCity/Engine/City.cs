@@ -27,7 +27,7 @@ namespace Engine
 
         public Need GetNeed(string name)
         {
-            return needs.Find(x => x.name == name);
+            return needs.Find(x => x.Name == name);
         }
 
         public Commodity GetCommodity(string name)
@@ -52,11 +52,10 @@ namespace Engine
                 city: this
             ));
 
-            Need hunger = new Need()
-            {
-                name = "hunger",
-                enjoymentCurveFoo = new Func<int,double>(x => Math.Sqrt(Math.Sqrt(Convert.ToDouble(x))))
-            };
+            Need hunger = new Need(
+                name: "hunger",
+                enjoymentCurveFoo: new Func<int, double>(x => Math.Sqrt(Math.Sqrt(Convert.ToDouble(x))))
+            );
             needs.Add(hunger);
 
             Commodity grain = new Commodity(

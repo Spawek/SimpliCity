@@ -8,20 +8,22 @@ namespace Engine
 {
     public class SingleProductionStrategy : BuissnessStrategy
     {
-        public SingleProductionStrategy(Company c, Technology t)
-            : base(c)
+        private const int DEFAULT_PRODUCTION_SIZE = 1;
+
+        public SingleProductionStrategy(Company company, Technology technology)
+            : base(company)
         {
-            production = t;
-            wantedProductionSize = 1;
+            Production = technology;
+            WantedProductionSize = DEFAULT_PRODUCTION_SIZE;
         }
 
         public override void BuyAndProduce()
         {
-            int maxProductionPossible = GetMaxProductionSize(Company, production);
-            int productionSize = Math.Min(maxProductionPossible, wantedProductionSize);
+            int maxProductionPossible = GetMaxProductionSize(Company, Production);
+            int productionSize = Math.Min(maxProductionPossible, WantedProductionSize);
 
-            BuyGoodsForProduction(production, productionSize);
-            Produce(production, productionSize);
+            BuyGoodsForProduction(Production, productionSize);
+            Produce(Production, productionSize);
         }
 
         private void Produce(Technology production, int productionSize)
@@ -61,9 +63,9 @@ namespace Engine
             {
                 int ammountPossessed = Company.commodities[commodity];
                 int ammountToSell = 0;
-                if (production.Input.ContainsKey(commodity))
+                if (Production.Input.ContainsKey(commodity))
                 {
-                    int ammountNeeded = production.Input[commodity] * wantedProductionSize;
+                    int ammountNeeded = Production.Input[commodity] * WantedProductionSize;
                     ammountToSell = ammountPossessed - ammountNeeded;
                 }
                 else
@@ -92,7 +94,7 @@ namespace Engine
             }
         }
 
-        private Technology production;
-        private int wantedProductionSize;
+        public Technology Production { get; private set; }
+        public int WantedProductionSize { get; private set; }
     }
 }

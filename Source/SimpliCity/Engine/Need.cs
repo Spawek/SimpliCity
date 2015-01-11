@@ -8,12 +8,18 @@ namespace Engine
 {
     public class Need
     {
-        public string name;
-        public double EnjoymentCurve(int ammount)
+        public Need(string name, Func<int, double> enjoymentCurveFoo)
         {
-            return enjoymentCurveFoo(ammount);
+            Name = name;
+            EnjoymentCurveFoo = enjoymentCurveFoo;
         }
 
-        public Func<int, double> enjoymentCurveFoo;
+        public string Name;
+        public double EnjoymentCurve(int ammount)
+        {
+            return EnjoymentCurveFoo(ammount);
+        }
+
+        public Func<int, double> EnjoymentCurveFoo { get; private set; }
     }
 }
