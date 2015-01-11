@@ -17,7 +17,7 @@ namespace Engine
             WantedProductionSize = DEFAULT_PRODUCTION_SIZE;
         }
 
-        public override void BuyAndProduce()
+        protected override void BuyAndProduce()
         {
             int maxProductionPossible = GetMaxProductionSize(Company, Production);
             int productionSize = Math.Min(maxProductionPossible, WantedProductionSize);
@@ -36,7 +36,10 @@ namespace Engine
             foreach (var item in production.Input)
             {
                 int countNeeded = item.Value * productionSize - Company.commodities[item.Key];
-                Company.Market.MakeBuyOffer(item.Key, countNeeded, Company);
+                if (countNeeded > 0)
+                {
+                    Company.Market.MakeBuyOffer(item.Key, countNeeded, Company);
+                }
             }
         }
 
@@ -54,7 +57,7 @@ namespace Engine
             return maxProductionPossible;
         }
 
-        public override void SellAssets()
+        protected override void SellAssets()
         {
             foreach (Commodity commodity in Company.commodities.Keys.ToList())  // .ToList() is needed as list dictionary is being modified in here
             {
@@ -82,7 +85,7 @@ namespace Engine
             }
         }
 
-        public override void PayDividend()
+        protected override void PayDividend()
         {
             decimal moneyToGive = Company.money * 0.1M;
             foreach (var item in Company.Shareholders)

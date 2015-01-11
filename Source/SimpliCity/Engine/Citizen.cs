@@ -11,14 +11,16 @@ namespace Engine
         public Citizen(string name, City city, decimal momey)
             : base(momey)
         {
-            Name = name;
+            name_ = name;
             City = city;
         }
 
-        public string Name { get; private set; }
+        private string name_;
         public City City { get; private set; }
         public Company Job = null;
 
         public abstract void BuyAndConsume();
+
+        public override string Name { get { return name_; } }
     }
 }

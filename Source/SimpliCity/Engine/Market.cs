@@ -57,8 +57,8 @@ namespace Engine
                 matchingOffers.Remove(minPriceOffer);
             }
 
-            Console.WriteLine("Market have {0} priced {1} of {2} to {3}",
-                Name, ammount.ToString(), commodity.Name, currPrice);
+            //Console.WriteLine("Market have {0} priced {1} of {2} to {3}",
+            //    Name, ammount.ToString(), commodity.Name, currPrice);
 
             return currPrice;
         }
@@ -77,11 +77,13 @@ namespace Engine
             if (matchingOffers.Sum(x => x.Ammount) < ammount)
                 throw new ApplicationException();
 
+            decimal pricePaid = 0.0M;
             while (currNeeded > 0)
             {
                 var minPriceOffer = matchingOffers.MinElement(x => x.Price);
                 if (minPriceOffer.Ammount <= currNeeded)
                 {
+                    pricePaid += minPriceOffer.Ammount * minPriceOffer.Price;
                     minPriceOffer.FinalizeOffer(buyer);
                     matchingOffers.Remove(minPriceOffer);
                     sellOffers.Remove(minPriceOffer);
@@ -89,10 +91,14 @@ namespace Engine
                 }
                 else
                 {
+                    pricePaid += currNeeded * minPriceOffer.Price;
                     minPriceOffer.FinalizeOfferPartially(buyer, currNeeded);
                     currNeeded -= currNeeded;
                 }
             }
+
+            Console.WriteLine(String.Format("{0} bought {1} of {2} for {3} on market {4}",
+                buyer.Name, ammount, commodity.Name, pricePaid, this.Name));
         }
 
         public int CalcMaxAmmountAvailableToBuyForGivenPrice( //CAN BE OPTIMIZED EASILY

@@ -14,8 +14,25 @@ namespace Engine
 
         protected Company Company { get; private set; }
 
-        public abstract void BuyAndProduce();
-        public abstract void SellAssets();
-        public abstract void PayDividend();
+        protected abstract void BuyAndProduce();
+        protected abstract void SellAssets();
+        protected abstract void PayDividend();
+
+        public void BuyAndProduceBase()
+        {
+            BuyAndProduce();
+        }
+
+        public void SellAssetsBase()
+        {
+            SellAssets();
+        }
+
+        public void PayDividendBase()
+        {
+            Console.WriteLine(String.Format("Company {0} pays dividends: ", Company.Name));
+            PayDividend();
+            Console.WriteLine(String.Format("Company {0} finished paying dividends", Company.Name));
+        }
     }
 }

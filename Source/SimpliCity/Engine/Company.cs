@@ -11,7 +11,7 @@ namespace Engine
         public Company(string _name, City _city, Market _market, IDictionary<AssetsOwner, decimal> _shareholders)
             : base (0)
         {
-            Name = _name;
+            name_ = _name;
             City = _city;
             Market = _market;
             Shareholders = _shareholders;
@@ -19,7 +19,8 @@ namespace Engine
             FreeEmployees = new List<Citizen>();
         }
 
-        public string Name { get; private set; }
+        private string name_;
+        public override string Name { get { return name_; } }
         public IDictionary<Citizen, decimal> Employees { get; private set; }
         public List<Citizen> FreeEmployees { get; set; }
         public IDictionary<AssetsOwner, decimal> Shareholders { get; private set; }
@@ -59,7 +60,7 @@ namespace Engine
         {
             PayWages();
             FreeAllEmployees();
-            strategy.BuyAndProduce();
+            strategy.BuyAndProduceBase();
         }
 
         private void FreeAllEmployees()
@@ -77,12 +78,12 @@ namespace Engine
 
         public void SellAssets()
         {
-            strategy.SellAssets();
+            strategy.SellAssetsBase();
         }
 
         public void PayDidivend()
         {
-            strategy.PayDividend();
+            strategy.PayDividendBase();
         }
     }
 }
