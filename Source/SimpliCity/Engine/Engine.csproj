@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssetsOwner.cs" />
-    <Compile Include="BuissnessStrategy.cs" />
+    <Compile Include="BuisnessStrategies\BuissnessStrategy.cs" />
     <Compile Include="Citizen.cs" />
     <Compile Include="City.cs" />
     <Compile Include="Commodity.cs" />
@@ -54,7 +54,7 @@
     <Compile Include="SellOffer\SellOfferWithDiscountPerTurn.cs" />
     <Compile Include="SellOffer\SellOffer.cs" />
     <Compile Include="SimpleCitizen.cs" />
-    <Compile Include="SingleProductionStrategy.cs" />
+    <Compile Include="BuisnessStrategies\SingleProductionStrategy.cs" />
     <Compile Include="SellOffer\StableSellOffer.cs" />
     <Compile Include="Technology.cs" />
     <Compile Include="Tools.cs" />
@@ -63,6 +63,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
