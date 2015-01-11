@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    // TODO:
-    // - if last buisness production was successfull (earned money) - repeat?
     public class Company : AssetsOwner
     {
         public Company(string _name, City _city, Market _market, IDictionary<AssetsOwner, decimal> _shareholders)
@@ -55,83 +53,5 @@ namespace Engine
         {
             strategy.PayDividend();
         }
-
-        //private KeyValuePair<Technology, int>? GetBestProduction()
-        //{
-        //    var bestProduction = new KeyValuePair<Technology, int>();
-        //    decimal bestPredictedRevenue = decimal.MinValue;
-        //    foreach (Technology tech in city.commonTechnologies)
-        //    {
-        //        int timesPossible = CalculateHowManyTimesProductionIsPossible(tech);
-        //        if (timesPossible <= 0) continue;
-        //        decimal predictedRevenue = CalculatePredictedRevenue(tech, timesPossible);
-
-        //        if (predictedRevenue > bestPredictedRevenue)
-        //        {
-        //            bestPredictedRevenue = predictedRevenue;
-        //            bestProduction = new KeyValuePair<Technology, int>(tech, timesPossible);
-        //        }
-        //    }
-
-        //    if (bestPredictedRevenue < 0)
-        //    {
-        //        return null;
-        //    }
-
-        //    return bestProduction;
-        //}
-
-        //private decimal CalculatePredictedRevenue(Technology tech, int timesPossible)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //private int CalculateHowManyTimesProductionIsPossible(Technology tech)
-        //{
-        //    int timesPossible = employees.Count / tech.labourNeeded;
-        //    //foreach (var inputNeeded in tech.input)
-        //    //{
-        //    //    var currResource = inputNeeded.Key;
-        //    //    var currAmmountNeeded = inputNeeded.Value;
-        //    //    var ammountPossesed = commodities[currResource];
-        //    //    var ammountAvailableToBuy = market.sellOffers.Where(x => x.commodity == currResource).Sum(x => x.ammount);
-        //    //    var resourcesAvailableForTimesPossible = (ammountPossesed + ammountAvailableToBuy) / currAmmountNeeded;
-        //    //    timesPossible = Math.Min(timesPossible, resourcesAvailableForTimesPossible);
-        //    //}
-        //    return timesPossible;
-        //}
-
-        ///// <returns>true if produced something</returns>
-        ////public bool ProduceOnce()
-        ////{
-        ////    var bestProduction = GetBestProduction();
-        ////    if (bestProduction == null)
-        ////        return false;
-
-        ////    Produce(bestProduction.Value.Key, bestProduction.Value.Value);
-            
-        ////}
-        // /// <summary>
-        // /// buy stuff and produce
-        // /// </summary>
-        // /// <param name="technology"></param>
-        // /// <param name="ammount"></param>
-        //private void Produce(Technology technology, int ammount)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void Sell()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void PayDividend()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //BUISSNESSPAN IDEA - each production company got its buisnessplan - for 30 days i ll produce that using that tech and so on ....
-
     }
 }
