@@ -16,10 +16,12 @@ namespace Engine
             Market = _market;
             Shareholders = _shareholders;
             Employees = new Dictionary<Citizen, decimal>();
+            FreeEmployees = new List<Citizen>();
         }
 
         public string Name { get; private set; }
         public IDictionary<Citizen, decimal> Employees { get; private set; }
+        public List<Citizen> FreeEmployees { get; set; }
         public IDictionary<AssetsOwner, decimal> Shareholders { get; private set; }
         public City City { get; private set; }
         public Market Market { get; private set; }
@@ -31,6 +33,14 @@ namespace Engine
 
             Employees.Add(employee, salary);
             employee.Job = this;
+        }
+
+        public void UseEmployees(List<Citizen> employees)
+        {
+            foreach (var e in employees)
+            {
+                FreeEmployees.Remove(e);
+            }
         }
 
         public void Fire(Citizen employee)
@@ -48,7 +58,13 @@ namespace Engine
         public void BuyAndProduce()
         {
             PayWages();
+            FreeAllEmployees();
             strategy.BuyAndProduce();
+        }
+
+        private void FreeAllEmployees()
+        {
+            FreeEmployees = Employees.Select(x => x.Key).ToList();
         }
 
         private void PayWages()

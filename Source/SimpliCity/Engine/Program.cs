@@ -21,6 +21,8 @@ namespace Engine
      *  - bancrucy
      *  - trade between markets
      *  - transport price
+     *  - employees skills
+     *  - company management? (using time for changing how company works)
      */
     class Program
     {

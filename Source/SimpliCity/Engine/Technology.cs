@@ -50,6 +50,22 @@ namespace Engine
 
         private void UseResources(Company company, int times)
         {
+            UseCommodities(company, times);
+            UseEmployees(company, times);
+        }
+
+        private void UseEmployees(Company company, int times)
+        {
+            int employeesNeeded = times * LabourNeeded;
+            if (company.FreeEmployees.Count < employeesNeeded)
+                throw new ApplicationException();
+
+            company.UseEmployees(
+                company.Employees.Take(employeesNeeded).Select(x => x.Key).ToList());
+        }
+
+        private void UseCommodities(Company company, int times)
+        {
             foreach (var item in Input)
             {
                 int commodityNeeded = item.Value * times;
