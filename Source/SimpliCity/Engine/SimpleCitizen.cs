@@ -19,8 +19,8 @@ namespace Engine
         public override void BuyAndConsume()
         {
             decimal maxSpendings = money * MAX_MONEY_SPENT_PER_TURN;
-            var grain = city.GetCommodity(COMMODITY_TO_BUY);
-            var market = city.markets[0]; //HARDCODED
+            var grain = City.GetCommodity(COMMODITY_TO_BUY);
+            var market = City.markets[0]; //HARDCODED
 
             int ammountToBuy = market.CalcMaxAmmountAvailableToBuyForGivenPrice(
                 grain, maxSpendings);

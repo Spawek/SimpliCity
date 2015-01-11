@@ -8,7 +8,13 @@ namespace Engine
 {
     public class Commodity
     {
-        public string name;
-        public Need need;
+        public Commodity(string name, Need need)
+        {
+            Name = name;
+            Need = need;
+        }
+
+        public string Name { get; private set; }
+        public Need Need { get; private set; }
     }
 }

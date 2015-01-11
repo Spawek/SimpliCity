@@ -17,7 +17,7 @@ namespace Engine
 
         public Citizen GetCitizen(string name)
         {
-            return citizens.Find(x => x.name == name);
+            return citizens.Find(x => x.Name == name);
         }
 
         public Market GetMarket(string name)
@@ -32,7 +32,7 @@ namespace Engine
 
         public Commodity GetCommodity(string name)
         {
-            return commodities.Find(x => x.name == name);
+            return commodities.Find(x => x.Name == name);
         }
 
         public City()
@@ -59,11 +59,10 @@ namespace Engine
             };
             needs.Add(hunger);
 
-            Commodity grain = new Commodity()
-            {
-                name = "grain",
-                need = GetNeed("hunger")
-            };
+            Commodity grain = new Commodity(
+                name: "grain",
+                need: GetNeed("hunger")
+            );
             commodities.Add(grain);
 
             Technology grainPlantation = new Technology()

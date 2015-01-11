@@ -11,22 +11,37 @@ namespace Engine
         public Company(string _name, City _city, Market _market, IDictionary<AssetsOwner, decimal> _shareholders)
             : base (0)
         {
-            name = _name;
-            city = _city;
-            market = _market;
-            shareholders = _shareholders;
+            Name = _name;
+            City = _city;
+            Market = _market;
+            Shareholders = _shareholders;
+            Employees = new Dictionary<Citizen, decimal>();
         }
 
-        public string name { get; private set; }
-        public IDictionary<Citizen, decimal> employees = new Dictionary<Citizen, decimal>();
-        public IDictionary<AssetsOwner, decimal> shareholders { get; private set; }
-        public City city { get; private set; }
-        public Market market { get; private set; }
+        public string Name { get; private set; }
+        public IDictionary<Citizen, decimal> Employees { get; private set; }
+        public IDictionary<AssetsOwner, decimal> Shareholders { get; private set; }
+        public City City { get; private set; }
+        public Market Market { get; private set; }
 
         public void Hire(Citizen employee, decimal salary)
         {
-            employees.Add(employee, salary);
-            employee.job = this;
+            if (employee.Job != null)
+                throw new ApplicationException();
+
+            Employees.Add(employee, salary);
+            employee.Job = this;
+        }
+
+        public void Fire(Citizen employee)
+        {
+            if (employee.Job != this)
+                throw new ApplicationException();
+            if (!Employees.ContainsKey(employee))
+                throw new ApplicationException();
+
+            employee.Job = null;
+            Employees.Remove(employee);
         }
 
         public BuissnessStrategy strategy;
@@ -38,7 +53,7 @@ namespace Engine
 
         private void PayWages()
         {
-            foreach (var employee in employees)
+            foreach (var employee in Employees)
             {
                 this.TransferMoney(employee.Key, employee.Value);
             }

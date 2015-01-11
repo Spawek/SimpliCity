@@ -27,7 +27,7 @@ namespace Engine
             offer.seller.commodities[offer.commodity] -= offer.ammount;
 
             Console.WriteLine(String.Format("On market {0}, {1} wants to sell {2} of {3} for {4} per one",
-                Name, offer.seller.name, offer.ammount.ToString(), offer.commodity.name, offer.price.ToString()));
+                Name, offer.seller.Name, offer.ammount.ToString(), offer.commodity.Name, offer.price.ToString()));
         }
 
         // it's O(n^2) - can be optimized easily
@@ -58,7 +58,7 @@ namespace Engine
             }
 
             Console.WriteLine("Market have {0} priced {1} of {2} to {3}",
-                Name, ammount.ToString(), commodity.name, currPrice);
+                Name, ammount.ToString(), commodity.Name, currPrice);
 
             return currPrice;
         }

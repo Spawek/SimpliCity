@@ -8,16 +8,16 @@ namespace Engine
 {
     public abstract class Citizen : AssetsOwner
     {
-        public Citizen(string n, City c, decimal m)
-            : base(m)
+        public Citizen(string name, City city, decimal momey)
+            : base(momey)
         {
-            name = n;
-            city = c;
+            Name = name;
+            City = city;
         }
 
-        public string name;
-        public City city;
-        public Company job = null;
+        public string Name { get; private set; }
+        public City City { get; private set; }
+        public Company Job = null;
 
         public abstract void BuyAndConsume();
     }

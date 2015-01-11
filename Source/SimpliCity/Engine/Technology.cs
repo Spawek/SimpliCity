@@ -16,7 +16,7 @@ namespace Engine
         public void Produce(Company c, int times)
         {
             Console.WriteLine("Company {0} uses {1} technology {2} times",
-                c.name, name, times);
+                c.Name, name, times);
             UseResources(c, times);
             GiveOutput(c, times);
         }

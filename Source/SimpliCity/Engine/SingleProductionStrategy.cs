@@ -17,7 +17,7 @@ namespace Engine
 
         public override void BuyAndProduce()
         {
-            int maxProductionPossible = GetMaxProductionSize(company, production);
+            int maxProductionPossible = GetMaxProductionSize(Company, production);
             int productionSize = Math.Min(maxProductionPossible, wantedProductionSize);
 
             BuyGoodsForProduction(production, productionSize);
@@ -26,21 +26,21 @@ namespace Engine
 
         private void Produce(Technology production, int productionSize)
         {
-            production.Produce(company, productionSize);
+            production.Produce(Company, productionSize);
         }
 
         private void BuyGoodsForProduction(Technology production, int productionSize)
         {
             foreach (var item in production.input)
             {
-                int countNeeded = item.Value * productionSize - company.commodities[item.Key];
-                company.market.MakeBuyOffer(item.Key, countNeeded, company);
+                int countNeeded = item.Value * productionSize - Company.commodities[item.Key];
+                Company.Market.MakeBuyOffer(item.Key, countNeeded, Company);
             }
         }
 
         private static int GetMaxProductionSize(Company company, Technology production)
         {
-            var market = company.market;
+            var market = company.Market;
             int maxProductionPossible = int.MaxValue;
             foreach (var c in production.input)
             {
@@ -51,15 +51,15 @@ namespace Engine
                 }
             }
 
-            maxProductionPossible = Math.Min(maxProductionPossible, company.employees.Count / production.labourNeeded);
+            maxProductionPossible = Math.Min(maxProductionPossible, company.Employees.Count / production.labourNeeded);
             return maxProductionPossible;
         }
 
         public override void SellAssets()
         {
-            foreach (Commodity commodity in company.commodities.Keys.ToList())  // .ToList() is needed as list dictionary is being modified in here
+            foreach (Commodity commodity in Company.commodities.Keys.ToList())  // .ToList() is needed as list dictionary is being modified in here
             {
-                int ammountPossessed = company.commodities[commodity];
+                int ammountPossessed = Company.commodities[commodity];
                 int ammountToSell = 0;
                 if (production.input.ContainsKey(commodity))
                 {
@@ -73,22 +73,22 @@ namespace Engine
 
                 if (ammountToSell != 0)
                 {
-                    company.market.addSellOffer(new SellOffer(
+                    Company.Market.addSellOffer(new SellOffer(
                         _commodity: commodity,
                         _price: 4, //TODO: pricing model
                         _ammount: ammountToSell,
-                        _seller: company));
+                        _seller: Company));
                 }
             }
         }
 
         public override void PayDividend()
         {
-            decimal moneyToGive = company.money * 0.1M;
-            foreach (var item in company.shareholders)
+            decimal moneyToGive = Company.money * 0.1M;
+            foreach (var item in Company.Shareholders)
             {
                 decimal currDividend = moneyToGive * item.Value;
-                company.TransferMoney(item.Key, currDividend);
+                Company.TransferMoney(item.Key, currDividend);
             }
         }
 

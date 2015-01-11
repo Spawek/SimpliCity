@@ -7,12 +7,12 @@ namespace Engine
 {
     public abstract class BuissnessStrategy
     {
-        public BuissnessStrategy(Company c)
+        public BuissnessStrategy(Company company)
         {
-            company = c;
+            Company = company;
         }
 
-        protected Company company;
+        protected Company Company { get; private set; }
 
         public abstract void BuyAndProduce();
         public abstract void SellAssets();
