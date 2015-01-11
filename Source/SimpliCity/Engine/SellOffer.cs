@@ -30,8 +30,7 @@ namespace Engine
             finalized = true;
 
             decimal moneyToTransfer = price * ammount;
-            buyer.money -= moneyToTransfer;
-            seller.money += moneyToTransfer; //TODO: make TransferMoney feature for companies/citizens
+            buyer.TransferMoney(seller, moneyToTransfer);
 
             if (!buyer.commodities.ContainsKey(commodity))
             {
@@ -49,9 +48,13 @@ namespace Engine
                 throw new ApplicationException();
 
             decimal moneyToTransfer = price * partialAmmount;
-            seller.money += moneyToTransfer;
-            buyer.money -= moneyToTransfer;
+            buyer.TransferMoney(seller, moneyToTransfer);
             ammount -= partialAmmount;
+
+            if (!buyer.commodities.ContainsKey(commodity))
+            {
+                buyer.commodities.Add(commodity, 0);
+            }
 
             buyer.commodities[commodity] += partialAmmount;
         }

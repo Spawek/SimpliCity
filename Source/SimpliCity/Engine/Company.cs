@@ -10,11 +10,20 @@ namespace Engine
     // - if last buisness production was successfull (earned money) - repeat?
     public class Company : AssetsOwner
     {
-        public string name;
+        public Company(string _name, City _city, Market _market, IDictionary<AssetsOwner, decimal> _shareholders)
+            : base (0)
+        {
+            name = _name;
+            city = _city;
+            market = _market;
+            shareholders = _shareholders;
+        }
+
+        public string name { get; private set; }
         public IDictionary<Citizen, decimal> employees = new Dictionary<Citizen, decimal>();
-        public IDictionary<AssetsOwner, decimal> shareholders = new Dictionary<AssetsOwner, decimal>();
-        public City city;
-        public Market market;
+        public IDictionary<AssetsOwner, decimal> shareholders { get; private set; }
+        public City city { get; private set; }
+        public Market market { get; private set; }
 
         public void Hire(Citizen employee, decimal salary)
         {
@@ -25,7 +34,16 @@ namespace Engine
         public BuissnessStrategy strategy;
         public void BuyAndProduce()
         {
+            PayWages();
             strategy.BuyAndProduce();
+        }
+
+        private void PayWages()
+        {
+            foreach (var employee in employees)
+            {
+                this.TransferMoney(employee.Key, employee.Value);
+            }
         }
 
         public void SellAssets()

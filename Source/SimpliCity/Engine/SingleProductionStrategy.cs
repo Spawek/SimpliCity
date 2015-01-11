@@ -57,13 +57,13 @@ namespace Engine
 
         public override void SellAssets()
         {
-            foreach (var item in company.commodities) //lista się modyfikuje i wywala tutaj - (w sumie to jest directory i nie ma on foreacha - no kurwa)
+            foreach (Commodity commodity in company.commodities.Keys.ToList())  // .ToList() is needed as list dictionary is being modified in here
             {
-                int ammountPossessed = company.commodities[item.Key];
+                int ammountPossessed = company.commodities[commodity];
                 int ammountToSell = 0;
-                if (production.input.ContainsKey(item.Key))
+                if (production.input.ContainsKey(commodity))
                 {
-                    int ammountNeeded = production.input[item.Key] * wantedProductionSize;
+                    int ammountNeeded = production.input[commodity] * wantedProductionSize;
                     ammountToSell = ammountPossessed - ammountNeeded;
                 }
                 else
@@ -74,7 +74,7 @@ namespace Engine
                 if (ammountToSell != 0)
                 {
                     company.market.addSellOffer(new SellOffer(
-                        _commodity: item.Key,
+                        _commodity: commodity,
                         _price: 4, //TODO: pricing model
                         _ammount: ammountToSell,
                         _seller: company));
@@ -88,8 +88,7 @@ namespace Engine
             foreach (var item in company.shareholders)
             {
                 decimal currDividend = moneyToGive * item.Value;
-                item.Key.money += currDividend;
-                company.money -= currDividend;
+                company.TransferMoney(item.Key, currDividend);
             }
         }
 

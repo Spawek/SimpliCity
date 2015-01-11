@@ -80,7 +80,7 @@ namespace Engine
             while (currNeeded > 0)
             {
                 var minPriceOffer = matchingOffers.MinElement(x => x.price);
-                if (minPriceOffer.ammount < currNeeded)
+                if (minPriceOffer.ammount <= currNeeded)
                 {
                     minPriceOffer.FinalizeOffer(buyer);
                     matchingOffers.Remove(minPriceOffer);

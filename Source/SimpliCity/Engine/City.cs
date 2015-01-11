@@ -42,7 +42,7 @@ namespace Engine
 
             citizens.Add(new SimpleCitizen(
                 name: "Janusz",
-                money: 50,
+                money: 100,
                 city: this
             ));
 
@@ -75,15 +75,15 @@ namespace Engine
             };
             commonTechnologies.Add(grainPlantation);
 
-            Company biznesJanusza = new Company()
-            {
-                name = "Biznes Janusza",
-                money = 50,
-                shareholders = new Dictionary<AssetsOwner, decimal>() { { GetCitizen("Janusz"), 1 } },
-                city = this,
-                market = GetMarket("Hala Targowa"),
-                commodities = new Dictionary<Commodity, int>() { { grain, 20 } }
-            };
+            Company biznesJanusza = new Company(
+                _name: "Biznes Janusza",
+                _shareholders: new Dictionary<AssetsOwner, decimal>() { { GetCitizen("Janusz"), 1M } },
+                _city: this,
+                _market: GetMarket("Hala Targowa")
+            );
+            biznesJanusza.commodities = new Dictionary<Commodity, int>() { { grain, 20 } };
+            GetCitizen("Janusz").TransferMoney(biznesJanusza, 50.0M);
+
             biznesJanusza.Hire(GetCitizen("Grażyna"), 10);
             biznesJanusza.strategy = new SingleProductionStrategy(biznesJanusza, grainPlantation);
             companies.Add(biznesJanusza);

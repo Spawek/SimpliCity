@@ -9,10 +9,10 @@ namespace Engine
     public abstract class Citizen : AssetsOwner
     {
         public Citizen(string n, City c, decimal m)
+            : base(m)
         {
             name = n;
             city = c;
-            money = m;
         }
 
         public string name;
