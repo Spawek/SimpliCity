@@ -10,10 +10,10 @@ namespace Engine
     {
         public Commodity Commodity { get; private set; }
         public int Ammount { get; private set; }
-        public abstract decimal Price { get; }
-        public Company Seller { get; private set; }
+        public abstract decimal PricePerPiece { get; }
+        public AssetsOwner Seller { get; private set; }
 
-        public SellOffer(Commodity commodity, int ammount, Company seller)
+        public SellOffer(Commodity commodity, int ammount, AssetsOwner seller)
         {
             Commodity = commodity;
             Ammount = ammount;
@@ -28,7 +28,7 @@ namespace Engine
                 throw new ApplicationException();
             finalized = true;
 
-            decimal moneyToTransfer = Price * Ammount;
+            decimal moneyToTransfer = PricePerPiece * Ammount;
             buyer.TransferMoney(Seller, moneyToTransfer);
 
             if (!buyer.commodities.ContainsKey(Commodity))
@@ -46,7 +46,7 @@ namespace Engine
             if (partialAmmount >= Ammount)
                 throw new ApplicationException();
 
-            decimal moneyToTransfer = Price * partialAmmount;
+            decimal moneyToTransfer = PricePerPiece * partialAmmount;
             buyer.TransferMoney(Seller, moneyToTransfer);
             Ammount -= partialAmmount;
 

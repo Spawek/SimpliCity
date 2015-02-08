@@ -51,6 +51,10 @@
     <Compile Include="Need.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SalesHistory\DaySalesHistory.cs" />
+    <Compile Include="SalesHistory\SalesHistory.cs" />
+    <Compile Include="SellAssistant\SellAssistant.cs" />
+    <Compile Include="SellAssistant\SimpleSellAssistant.cs" />
     <Compile Include="SellOffer\SellOfferWithDiscountPerTurn.cs" />
     <Compile Include="SellOffer\SellOffer.cs" />
     <Compile Include="SimpleCitizen.cs" />

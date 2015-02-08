@@ -21,9 +21,23 @@ namespace Engine
         public static void RegisterCounter(TurnCounter turnCounter)
         {
             if (instance != null)
-                throw new ApplicationException();
+                throw new ApplicationException("You cannot register 2 counters!");
 
             instance = turnCounter;
+        }
+
+        /// <summary>
+        /// Mostly for test purposes
+        /// </summary>
+        /// <param name="turnCounter">
+        /// just for safety - if u dont know what is registred, you cannot unregister
+        /// </param>
+        public static void UnregisterCounter(TurnCounter turnCounter)
+        {
+            if (instance != turnCounter)
+                throw new ApplicationException("Your counter is not registred!");
+            
+            instance = null;
         }
 
         public static int Now

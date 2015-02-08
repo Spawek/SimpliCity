@@ -10,7 +10,7 @@ namespace EngineTests
     {
         Commodity grain = new Commodity("grain", null);
         Commodity meat = new Commodity("meat", null);
-        Market market = new Market("Market1");
+        Market market = new Market("Market1", new DaySalesHistory());
         Company seller = new Company("seller", null, null, null);
         
         public MarketTests()
@@ -30,7 +30,6 @@ namespace EngineTests
                 price: 1,
                 seller: seller
             );
-
 
             market.AddSellOffer(grainSellOffer1);
             market.AddSellOffer(grainSellOffer2);

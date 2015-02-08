@@ -9,7 +9,7 @@ namespace Engine
     public class SellOfferWithDiscountPerTurn : SellOffer
     {
         public SellOfferWithDiscountPerTurn(Commodity commodity, int ammount,
-            decimal price, Company seller, double discount)
+            decimal price, AssetsOwner seller, double discount)
             : base(commodity, ammount, seller)
         {
             if (discount <= 0.0d || discount >= 1.0d)
@@ -20,7 +20,7 @@ namespace Engine
             offerBegginingTurn = TurnCounter.Now;
         }
 
-        public override decimal Price
+        public override decimal PricePerPiece
         {
             get
             {

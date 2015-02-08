@@ -17,7 +17,7 @@ namespace Engine
             initialPrice = price;
         }
 
-        public override decimal Price { get { return initialPrice; } }
+        public override decimal PricePerPiece { get { return initialPrice; } }
 
         private decimal initialPrice;
     }

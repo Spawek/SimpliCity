@@ -37,7 +37,7 @@ namespace Engine
 
         public City()
         {
-            Market halaTargowa = new Market("Hala Targowa");
+            Market halaTargowa = new Market("Hala Targowa", new DaySalesHistory());
             markets.Add(halaTargowa);
 
             citizens.Add(new SimpleCitizen(
@@ -81,8 +81,9 @@ namespace Engine
             biznesJanusza.commodities = new Dictionary<Commodity, int>() { { grain, 20 } };
             GetCitizen("Janusz").TransferMoney(biznesJanusza, 50.0M);
 
+            var sellAssistantJanusza = new SimpleSellAssistant(halaTargowa);
             biznesJanusza.Hire(GetCitizen("Grażyna"), 10);
-            biznesJanusza.strategy = new SingleProductionStrategy(biznesJanusza, grainPlantation);
+            biznesJanusza.strategy = new SingleProductionStrategy(biznesJanusza, grainPlantation, sellAssistantJanusza);
             companies.Add(biznesJanusza);
         }
     }

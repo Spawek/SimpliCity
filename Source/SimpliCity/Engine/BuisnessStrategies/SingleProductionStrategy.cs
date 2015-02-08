@@ -10,11 +10,13 @@ namespace Engine
     {
         private const int DEFAULT_PRODUCTION_SIZE = 1;
 
-        public SingleProductionStrategy(Company company, Technology technology)
+        public SingleProductionStrategy(Company company, Technology technology,
+            SellAssistant sellAssistant)
             : base(company)
         {
             Production = technology;
             WantedProductionSize = DEFAULT_PRODUCTION_SIZE;
+            SellAssistant = sellAssistant;
         }
 
         protected override void BuyAndProduce()
@@ -75,12 +77,7 @@ namespace Engine
 
                 if (ammountToSell != 0)
                 {
-                    Company.Market.AddSellOffer(new SellOfferWithDiscountPerTurn(
-                        commodity: commodity,
-                        price: 4, //TODO: pricing model
-                        ammount: ammountToSell,
-                        seller: Company,
-                        discount: 0.05));
+                    SellAssistant.SellAsset(Company, commodity, ammountToSell);
                 }
             }
         }
@@ -97,5 +94,6 @@ namespace Engine
 
         public Technology Production { get; private set; }
         public int WantedProductionSize { get; private set; }
+        public SellAssistant SellAssistant { get; private set; }
     }
 }

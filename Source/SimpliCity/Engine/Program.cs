@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 namespace Engine
 {
     /*
+     * IDEAS:
+     *  - workforce can be treated like a special commodity, that every person get one a day
+     *      and can sell it, but in the end of a day it disappears
+     * 
      * FOR NOW TODO:
      * - job market
      * - needs

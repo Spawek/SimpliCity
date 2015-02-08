@@ -10,9 +10,10 @@ namespace Engine
     {
         public string Name { get; private set; }
 
-        public Market(string name)
+        public Market(string name, SalesHistory salesHistory)
         {
             Name = name;
+            SalesHistory = salesHistory;
         }
 
         // when company gives sell offer to something, it is actually moved to market
@@ -27,7 +28,7 @@ namespace Engine
             offer.Seller.commodities[offer.Commodity] -= offer.Ammount;
 
             Console.WriteLine(String.Format("On market {0} {1} wants to sell {2} of {3} for {4} per one",
-                Name, offer.Seller.Name, offer.Ammount.ToString(), offer.Commodity.Name, offer.Price.ToString()));
+                Name, offer.Seller.Name, offer.Ammount.ToString(), offer.Commodity.Name, offer.PricePerPiece.ToString()));
         }
 
         // it's O(n^2) - can be optimized easily
@@ -43,15 +44,15 @@ namespace Engine
             decimal currPrice = 0;
             while (currNeeded > 0)
             {
-                var minPriceOffer = matchingOffers.MinElement(x => x.Price);
+                var minPriceOffer = matchingOffers.MinElement(x => x.PricePerPiece);
                 if (minPriceOffer.Ammount < currNeeded)
                 {
-                    currPrice += minPriceOffer.Ammount * minPriceOffer.Price;
+                    currPrice += minPriceOffer.Ammount * minPriceOffer.PricePerPiece;
                     currNeeded -= minPriceOffer.Ammount;
                 }
                 else
                 {
-                    currPrice += currNeeded * minPriceOffer.Price;
+                    currPrice += currNeeded * minPriceOffer.PricePerPiece;
                     currNeeded -= currNeeded;
                 }
                 matchingOffers.Remove(minPriceOffer);
@@ -80,19 +81,19 @@ namespace Engine
             decimal pricePaid = 0.0M;
             while (currNeeded > 0)
             {
-                var minPriceOffer = matchingOffers.MinElement(x => x.Price);
+                var minPriceOffer = matchingOffers.MinElement(x => x.PricePerPiece);
                 if (minPriceOffer.Ammount <= currNeeded)
                 {
-                    pricePaid += minPriceOffer.Ammount * minPriceOffer.Price;
-                    minPriceOffer.FinalizeOffer(buyer);
+                    pricePaid += minPriceOffer.Ammount * minPriceOffer.PricePerPiece;
+                    FinalizeOfferAndLog(minPriceOffer, buyer);
                     matchingOffers.Remove(minPriceOffer);
                     sellOffers.Remove(minPriceOffer);
                     currNeeded -= minPriceOffer.Ammount;
                 }
                 else
                 {
-                    pricePaid += currNeeded * minPriceOffer.Price;
-                    minPriceOffer.FinalizeOfferPartially(buyer, currNeeded);
+                    pricePaid += currNeeded * minPriceOffer.PricePerPiece;
+                    FinizeOfferPartiallyAndLog(minPriceOffer, currNeeded, buyer);
                     currNeeded -= currNeeded;
                 }
             }
@@ -101,10 +102,22 @@ namespace Engine
                 buyer.Name, ammount, commodity.Name, pricePaid, this.Name));
         }
 
+        private void FinalizeOfferAndLog(SellOffer offer, AssetsOwner buyer)
+        {
+            offer.FinalizeOffer(buyer);
+            SalesHistory.AddTodaySaleData(offer.Commodity, offer.Ammount, offer.PricePerPiece);
+        }
+
+        private void FinizeOfferPartiallyAndLog(SellOffer offer, int ammount, AssetsOwner buyer)
+        {
+            offer.FinalizeOfferPartially(buyer, ammount);
+            SalesHistory.AddTodaySaleData(offer.Commodity, ammount, offer.PricePerPiece);
+        }
+
         public int CalcMaxAmmountAvailableToBuyForGivenPrice( //CAN BE OPTIMIZED EASILY
             Commodity commodity, decimal maxPrice)
         {
-            if (sellOffers.Where(x => x.Commodity == commodity).Sum(x => x.Ammount * x.Price) < maxPrice)
+            if (sellOffers.Where(x => x.Commodity == commodity).Sum(x => x.Ammount * x.PricePerPiece) < maxPrice)
                 return sellOffers.Where(x => x.Commodity == commodity).Sum(x => x.Ammount);
 
             decimal currPrice = 0M;
@@ -118,6 +131,7 @@ namespace Engine
             return ammountToBuy;
         }
 
+        public SalesHistory SalesHistory { get; private set; }
         private List<SellOffer> sellOffers = new List<SellOffer>();
     }
 }
