@@ -43,13 +43,15 @@ namespace Engine
             citizens.Add(new SimpleCitizen(
                 name: "Janusz",
                 money: 100,
-                city: this
+                city: this,
+                sellAssistant: new SimpleSellAssistant(halaTargowa)
             ));
 
             citizens.Add(new SimpleCitizen(
                 name: "Grażyna",
                 money: 100,
-                city: this
+                city: this,
+                sellAssistant: new SimpleSellAssistant(halaTargowa)
             ));
 
             Need hunger = new Need(
@@ -67,7 +69,7 @@ namespace Engine
             Technology grainPlantation = new Technology(
                 name: "grain plantation",
                 labourNeeded: 1,
-                input: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 10 } },
+                input: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 10 }, { SpecialCommodities.Work, 1 } },
                 output: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } }
             );
             commonTechnologies.Add(grainPlantation);
@@ -82,7 +84,6 @@ namespace Engine
             GetCitizen("Janusz").TransferMoney(biznesJanusza, 50.0M);
 
             var sellAssistantJanusza = new SimpleSellAssistant(halaTargowa);
-            biznesJanusza.Hire(GetCitizen("Grażyna"), 10);
             biznesJanusza.strategy = new SingleProductionStrategy(biznesJanusza, grainPlantation, sellAssistantJanusza);
             companies.Add(biznesJanusza);
         }

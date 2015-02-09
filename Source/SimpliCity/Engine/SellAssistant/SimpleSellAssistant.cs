@@ -8,7 +8,7 @@ namespace Engine
 {
     class SimpleSellAssistant : SellAssistant
     {
-        private const decimal SELL_PREMIUM = 0.5M;
+        private const decimal SELL_PREMIUM = 0.2M;
         private const double SELL_DISCOUNT_PER_TURN = 0.05;
 
         public SimpleSellAssistant(Market market)
@@ -43,7 +43,8 @@ namespace Engine
 
         private IDictionary<string, decimal> defaultPrices = new Dictionary<string, decimal>()
         {
-            {"grain", 4}
+            {"grain", 4},
+            {"work", 10}
         };
 
         public Market Market { get; private set; }

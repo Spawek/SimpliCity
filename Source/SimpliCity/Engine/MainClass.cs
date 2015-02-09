@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 namespace Engine
 {
     /*
+     * BUGS:
+     *  - when during last day there was no commodity sold - last price is default price
+     * 
      * IDEAS:
      *  - workforce can be treated like a special commodity, that every person get one a day
      *      and can sell it, but in the end of a day it disappears
@@ -55,6 +58,11 @@ namespace Engine
 
         private static void MakeTurn(City simpliCity)
         {
+            foreach (var c in simpliCity.citizens)
+            {
+                c.CreateAndSellWork();
+            }
+
             foreach (var c in simpliCity.companies)
             {
                 c.BuyAndProduce();

@@ -8,9 +8,10 @@ namespace Engine
 {
     public class SimpleCitizen : Citizen
     {
-        public SimpleCitizen(string name, City city, decimal money)
+        public SimpleCitizen(string name, City city, decimal money, SellAssistant sellAssistant)
             : base(name, city, money)
         {
+            SellAssistant = sellAssistant;
         }
 
         private const decimal MAX_MONEY_SPENT_PER_TURN = 0.1M;
@@ -27,5 +28,13 @@ namespace Engine
 
             market.MakeBuyOffer(grain, ammountToBuy, this);
         }
+
+        protected override void SellWork()
+        {
+            var work = SpecialCommodities.Work;
+            SellAssistant.SellAsset(this, work, this.commodities[work]);
+        }
+
+        private SellAssistant SellAssistant { get; set; }
     }
 }

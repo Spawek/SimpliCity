@@ -37,7 +37,8 @@ namespace Engine
         {
             foreach (var item in production.Input)
             {
-                int countNeeded = item.Value * productionSize - Company.commodities[item.Key];
+                var storedCommodities = Company.commodities.ContainsKey(item.Key) ? Company.commodities[item.Key] : 0;
+                var countNeeded = item.Value * productionSize - storedCommodities;
                 if (countNeeded > 0)
                 {
                     Company.Market.MakeBuyOffer(item.Key, countNeeded, Company);
@@ -48,11 +49,12 @@ namespace Engine
         private static int GetMaxProductionSize(Company company, Technology production)
         {
             var market = company.Market;
-            int maxProductionPossible = company.Employees.Count / production.LabourNeeded;
+            int maxProductionPossible = int.MaxValue;
             foreach (var c in production.Input)
             {
                 var commodityAvailableOnMarket = market.GetCommodityAvailable(c.Key);
-                var commodityAvailable = commodityAvailableOnMarket + company.commodities[c.Key];
+                var storedCommodities = company.commodities.ContainsKey(c.Key) ? company.commodities[c.Key] : 0;
+                var commodityAvailable = commodityAvailableOnMarket + storedCommodities;
                 maxProductionPossible = Math.Min(maxProductionPossible, commodityAvailable / c.Value);
             }
             
@@ -65,7 +67,7 @@ namespace Engine
             {
                 int ammountPossessed = Company.commodities[commodity];
                 int ammountToSell = 0;
-                if (Production.Input.ContainsKey(commodity))
+                if (Production.Input.ContainsKey(commodity) && ammountPossessed > ammountToSell)
                 {
                     int ammountNeeded = Production.Input[commodity] * WantedProductionSize;
                     ammountToSell = ammountPossessed - ammountNeeded;

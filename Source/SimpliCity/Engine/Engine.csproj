@@ -60,6 +60,7 @@
     <Compile Include="SimpleCitizen.cs" />
     <Compile Include="BuisnessStrategies\SingleProductionStrategy.cs" />
     <Compile Include="SellOffer\StableSellOffer.cs" />
+    <Compile Include="SpecialCommodities.cs" />
     <Compile Include="Technology.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="TurnCounter.cs" />

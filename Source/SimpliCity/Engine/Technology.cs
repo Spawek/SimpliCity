@@ -30,7 +30,7 @@ namespace Engine
         {
             Console.WriteLine("Company {0} uses {1} technology {2} times",
                 company.Name, Name, times);
-            UseResources(company, times);
+            UseCommodities(company, times);
             GiveOutput(company, times);
         }
 
@@ -46,22 +46,6 @@ namespace Engine
                 }
                 company.commodities[item.Key] += commodityProduced;
             }
-        }
-
-        private void UseResources(Company company, int times)
-        {
-            UseCommodities(company, times);
-            UseEmployees(company, times);
-        }
-
-        private void UseEmployees(Company company, int times)
-        {
-            int employeesNeeded = times * LabourNeeded;
-            if (company.FreeEmployees.Count < employeesNeeded)
-                throw new ApplicationException();
-
-            company.UseEmployees(
-                company.Employees.Take(employeesNeeded).Select(x => x.Key).ToList());
         }
 
         private void UseCommodities(Company company, int times)
