@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    class SimpleSellAssistant : SellAssistant
+    public class SimpleSellAssistant : SellAssistant
     {
         private const decimal SELL_PREMIUM = 0.2M;
         private const double SELL_DISCOUNT_PER_TURN = 0.05;

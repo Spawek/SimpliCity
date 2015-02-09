@@ -11,8 +11,8 @@ namespace Engine
      *  - when during last day there was no commodity sold - last price is default price
      * 
      * IDEAS:
-     *  - workforce can be treated like a special commodity, that every person get one a day
-     *      and can sell it, but in the end of a day it disappears
+     *  - commodities can get lost when stored too long (work after 1 turn),
+     *      then should be treated on market like sold for 0 (coz got wasted)
      * 
      * FOR NOW TODO:
      * - job market
