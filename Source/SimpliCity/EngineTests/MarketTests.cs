@@ -6,23 +6,8 @@ using System.Collections.Generic;
 namespace EngineTests
 {
     [TestClass]
-    public class MarketTests
+    public class MarketTests : TestWithTimeCounter
     {
-        TurnCounter counter;
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            counter = new TurnCounter();
-            TurnCounter.RegisterCounter(counter);
-        }
-
-        [TestCleanup]
-        public void TeadDown()
-        {
-            TurnCounter.UnregisterCounter(counter);
-        }
-
         Commodity grain = new Commodity("grain", null);
         Commodity meat = new Commodity("meat", null);
         Market market = new Market("Market1", new DaySalesHistory());

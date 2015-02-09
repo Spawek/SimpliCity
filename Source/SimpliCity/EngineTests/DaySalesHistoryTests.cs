@@ -5,23 +5,9 @@ using Engine;
 namespace EngineTests
 {
     [TestClass]
-    public class DaySalesHistoryTests
+    public class DaySalesHistoryTests : TestWithTimeCounter
     {
         Commodity grain = new Commodity("grain", null);
-        TurnCounter counter;
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            counter = new TurnCounter();
-            TurnCounter.RegisterCounter(counter);
-        }
-
-        [TestCleanup]
-        public void TeadDown()
-        {
-            TurnCounter.UnregisterCounter(counter);
-        }
 
         [TestMethod]
         public void DasySalesHistorySimpleTest()

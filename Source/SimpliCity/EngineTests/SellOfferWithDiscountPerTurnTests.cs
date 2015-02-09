@@ -5,23 +5,8 @@ using Engine;
 namespace EngineTests
 {
     [TestClass]
-    public class SellOfferWithDiscountPerTurnTests
+    public class SellOfferWithDiscountPerTurnTests : TestWithTimeCounter
     {
-        TurnCounter counter;
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            counter = new TurnCounter();
-            TurnCounter.RegisterCounter(counter);
-        }
-
-        [TestCleanup]
-        public void TeadDown()
-        {
-            TurnCounter.UnregisterCounter(counter);
-        }
-
         [TestMethod]
         public void SellOfferWithDiscountPerTurnTest()
         {
