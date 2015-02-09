@@ -36,7 +36,7 @@ namespace Engine
      *  - employees skills
      *  - company management? (using time for changing how company works)
      */
-    class Program
+    class MainClass
     {
         static void Main(string[] args)
         {
