@@ -9,6 +9,7 @@ namespace Engine
     /*
      * BUGS:
      *  - when during last day there was no commodity sold - last price is default price
+     * - there is some problem with pricing seen during simulation (price going down to 0) - test pricer module
      * 
      * IDEAS:
      *  - commodities can get lost when stored too long (work after 1 turn),
@@ -16,14 +17,18 @@ namespace Engine
      *      (i dont know if its good idea) 
      * 
      * FOR NOW TODO:
+     * - add commodity storage (will be easier to use if override operator [])
+     * - what is now sell offer - should be asset owner either
+     * - optimize market - its really shitty
+     * - uncomment technology tests
      * - job market
      * - needs
      * - companies creation
      * - sell prices changes
      *      - market history prices
-     *  - change city initial state to be in xml file (or mby do it later? - its easier to generate it from code)
-     *  - commodities spoiling (% per turn) (easier to implement (fast) than time to expire)
-     *  - work ammount citizens produce depends of how good they feel (mby some tech work, which appears only when they feel rly good?)
+     * - change city initial state to be in xml file (or mby do it later? - its easier to generate it from code)
+     * - commodities spoiling (% per turn) (easier to implement (fast) than time to expire)
+     * - work ammount citizens produce depends of how good they feel (mby some tech work, which appears only when they feel rly good?)
      * 
      * TODO:
      *  - add government

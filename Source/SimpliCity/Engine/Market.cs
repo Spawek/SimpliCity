@@ -32,14 +32,18 @@ namespace Engine
         }
 
         // it's O(n^2) - can be optimized easily
-        public decimal PriceBuyOffer(Commodity commodity, int ammount)
+        /// <summary></summary>
+        /// <param name="commodity"></param>
+        /// <param name="ammount"></param>
+        /// <returns>null if such an ammount is not available</returns>
+        public decimal? PriceBuyOffer(Commodity commodity, int ammount)
         {
             int currNeeded = ammount;
 
             var matchingOffers = sellOffers.Where(x => x.Commodity == commodity).ToList();
 
             if (matchingOffers.Sum(x => x.Ammount) < ammount)
-                throw new ApplicationException();
+                return null;
 
             decimal currPrice = 0;
             while (currNeeded > 0)
@@ -125,7 +129,7 @@ namespace Engine
             while (currPrice < maxPrice)
             {
                 currAmmount++;
-                currPrice = PriceBuyOffer(commodity, currAmmount);
+                currPrice = PriceBuyOffer(commodity, currAmmount).Value;
             }
             int ammountToBuy = currAmmount - 1;
             return ammountToBuy;

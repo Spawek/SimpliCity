@@ -37,12 +37,10 @@ namespace Engine
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <param name="commodities"></param>
         /// <returns>null means it cannot calculate expected value</returns>
-        private decimal? PriceCommodities(IDictionary<Commodity, int> commodities)
+        private decimal? PriceCommoditiesByHistory(IDictionary<Commodity, int> commodities)
         {
             var salesHistory = Company.Market.SalesHistory;
 
@@ -56,12 +54,28 @@ namespace Engine
         }
 
         /// <summary></summary>
+        /// <param name="commodities"></param>
+        /// <returns>null means it cannot calculate expected price</returns>
+        private static decimal? GetMarketPrice(IDictionary<Commodity, int> commodities, Market market)
+        {
+            var inputs = commodities.Select(
+                x => market.PriceBuyOffer(x.Key, x.Value));
+
+            if (inputs.Any(x => !x.HasValue))
+                return null;
+
+            return inputs.Sum(x => x.Value);
+        }
+
+        /// <summary></summary>
         /// <param name="productionSize"></param>
         /// <returns>null means it cannot calculate expected profit</returns>
         private decimal? GetExpectedProfit(int productionSize)
         {
-            var totalInputCost = PriceCommodities(Production.Input);
-            var totalExpectedOutputProfit = PriceCommodities(Production.Output);
+            var totalInputCost = GetMarketPrice(Production.Input, Company.Market);
+            var totalExpectedOutputProfit = PriceCommoditiesByHistory(Production.Output);
+            if (!totalExpectedOutputProfit.HasValue)
+                return null;
 
             return totalExpectedOutputProfit - totalInputCost;
         }
@@ -84,6 +98,15 @@ namespace Engine
             }
         }
 
+        private static IDictionary<Commodity, int> GetCommoditiesNeededToBuyForProduction(
+            Technology technology, int productionSize, IDictionary<Commodity, int> storedCommodities)
+        {
+            return technology.Input.ToDictionary(
+                x => x.Key,
+                x => x.Value * productionSize - (storedCommodities.ContainsKey(x.Key) ? storedCommodities[x.Key] : 0));
+        }
+
+        // TODO: this needs to be rewritten, just made it work (but slowly) for now
         private static int GetMaxProductionSize(Company company, Technology production)
         {
             var market = company.Market;
@@ -94,6 +117,14 @@ namespace Engine
                 var storedCommodities = company.commodities.ContainsKey(c.Key) ? company.commodities[c.Key] : 0;
                 var commodityAvailable = commodityAvailableOnMarket + storedCommodities;
                 maxProductionPossible = Math.Min(maxProductionPossible, commodityAvailable / c.Value);
+            }
+
+            // this 'algorithm' is really slow - TODO: find better one
+            while (GetMarketPrice(
+                GetCommoditiesNeededToBuyForProduction(production, maxProductionPossible, company.commodities), 
+                    company.Market) > company.money)
+            {
+                maxProductionPossible--;
             }
             
             return maxProductionPossible;
