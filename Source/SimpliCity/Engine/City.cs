@@ -66,6 +66,24 @@ namespace Engine
             );
             commodities.Add(grain);
 
+            Commodity cow = new Commodity(
+                name: "cow",
+                need: null
+            );
+            commodities.Add(cow);
+
+            Commodity milk = new Commodity(
+                name: "milk",
+                need: GetNeed("hunger")
+            );
+            commodities.Add(milk);
+
+            Commodity meat = new Commodity(
+                name: "meat",
+                need: GetNeed("hunger")
+            );
+            commodities.Add(meat);
+
             Technology grainPlantation = new Technology(
                 name: "grain plantation",
                 labourNeeded: 1,
@@ -73,6 +91,22 @@ namespace Engine
                 output: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } }
             );
             commonTechnologies.Add(grainPlantation);
+
+            Technology milkCow = new Technology(
+                name: "milk cow",
+                labourNeeded: 1,
+                input: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 1 }, { SpecialCommodities.Work, 1 } },
+                output: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 1 }, { GetCommodity("milk"), 1 } }
+            );
+            commonTechnologies.Add(milkCow);
+
+            Technology reproduceCow = new Technology(
+                name: "reproduce cow",
+                labourNeeded: 2,
+                input: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 2 }, { SpecialCommodities.Work, 2 } },
+                output: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 3 } }
+            );
+            commonTechnologies.Add(reproduceCow);
 
             Company biznesJanusza = new Company(
                 _name: "Biznes Janusza",

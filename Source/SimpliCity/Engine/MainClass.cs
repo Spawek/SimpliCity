@@ -13,6 +13,7 @@ namespace Engine
      * IDEAS:
      *  - commodities can get lost when stored too long (work after 1 turn),
      *      then should be treated on market like sold for 0 (coz got wasted)
+     *      (i dont know if its good idea) 
      * 
      * FOR NOW TODO:
      * - job market
