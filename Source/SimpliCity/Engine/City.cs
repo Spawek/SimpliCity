@@ -81,17 +81,14 @@ namespace Engine
             {
                 new Technology(
                     name: "grain plantation",
-                    labourNeeded: 1,
                     input: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 10 }, { SpecialCommodities.Work, 1 } },
                     output: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } }),
                 new Technology(
                     name: "milk cow",
-                    labourNeeded: 1,
                     input: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 1 }, { SpecialCommodities.Work, 1 } },
                     output: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 1 }, { GetCommodity("milk"), 10 } }),
                 new Technology(
                     name: "reproduce cow",
-                    labourNeeded: 2,
                     input: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 2 }, { SpecialCommodities.Work, 2 } },
                     output: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 3 } })
             };

@@ -12,17 +12,15 @@ namespace Engine
      */
     public class Technology
     {
-        public Technology(string name, int labourNeeded,
-            IDictionary<Commodity, int> input, IDictionary<Commodity, int> output)
+        public Technology(string name, IDictionary<Commodity, int> input,
+            IDictionary<Commodity, int> output)
         {
             Name = name;
-            LabourNeeded = labourNeeded;
             Input = input;
             Output = output;
         }
 
         public string Name { get; private set; }
-        public int LabourNeeded { get; private set; }
         public IDictionary<Commodity, int> Input { get; private set; }
         public IDictionary<Commodity, int> Output { get; private set; }
 
