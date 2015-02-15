@@ -21,7 +21,9 @@ namespace Engine
      * - companies creation
      * - sell prices changes
      *      - market history prices
-     * 
+     *  - change city initial state to be in xml file (or mby do it later? - its easier to generate it from code)
+     *  - commodities spoiling (% per turn) (easier to implement (fast) than time to expire)
+     *  - work ammount citizens produce depends of how good they feel (mby some tech work, which appears only when they feel rly good?)
      * 
      * TODO:
      *  - add government
@@ -50,9 +52,7 @@ namespace Engine
 
             while (true)
             {
-                Console.WriteLine("TURN {0} BEGINS!", TurnCounter.Now);
                 MakeTurn(simpliCity);
-                Console.WriteLine("TURN {0} ENDS!", TurnCounter.Now);
                 counter.IncrementCounter();
             }
         }

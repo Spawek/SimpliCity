@@ -16,6 +16,7 @@ namespace Engine
         public void IncrementCounter()
         {
             currentTurn++;
+            Console.WriteLine("TURN {0} BEGINS!", TurnCounter.Now);
         }
 
         public static void RegisterCounter(TurnCounter turnCounter)

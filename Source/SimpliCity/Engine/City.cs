@@ -35,78 +35,27 @@ namespace Engine
             return commodities.Find(x => x.Name == name);
         }
 
+        public Technology GetTechnology(string name)
+        {
+            return commonTechnologies.Find(x => x.Name == name);
+        }
+
+        /// <summary>
+        /// this is more like script setting up the initial state than part of engine
+        /// </summary>
         public City()
         {
-            Market halaTargowa = new Market("Hala Targowa", new DaySalesHistory());
-            markets.Add(halaTargowa);
+            markets.AddRange(CreateMarket());
+            citizens.AddRange(CreateCitizens());
+            needs.AddRange(CreateNeeds());
+            commodities.AddRange(CreateCommodities());
+            commonTechnologies.AddRange(CreateTechnologies());
+            companies.AddRange(CreateCompanies()); // to be removed (mby?) - companies should be created by citizens, not scripted
+        }
 
-            citizens.Add(new SimpleCitizen(
-                name: "Janusz",
-                money: 100,
-                city: this,
-                sellAssistant: new SimpleSellAssistant(halaTargowa)
-            ));
-
-            citizens.Add(new SimpleCitizen(
-                name: "Grażyna",
-                money: 100,
-                city: this,
-                sellAssistant: new SimpleSellAssistant(halaTargowa)
-            ));
-
-            Need hunger = new Need(
-                name: "hunger",
-                enjoymentCurveFoo: new Func<int, double>(x => Math.Sqrt(Math.Sqrt(Convert.ToDouble(x))))
-            );
-            needs.Add(hunger);
-
-            Commodity grain = new Commodity(
-                name: "grain",
-                need: GetNeed("hunger")
-            );
-            commodities.Add(grain);
-
-            Commodity cow = new Commodity(
-                name: "cow",
-                need: null
-            );
-            commodities.Add(cow);
-
-            Commodity milk = new Commodity(
-                name: "milk",
-                need: GetNeed("hunger")
-            );
-            commodities.Add(milk);
-
-            Commodity meat = new Commodity(
-                name: "meat",
-                need: GetNeed("hunger")
-            );
-            commodities.Add(meat);
-
-            Technology grainPlantation = new Technology(
-                name: "grain plantation",
-                labourNeeded: 1,
-                input: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 10 }, { SpecialCommodities.Work, 1 } },
-                output: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } }
-            );
-            commonTechnologies.Add(grainPlantation);
-
-            Technology milkCow = new Technology(
-                name: "milk cow",
-                labourNeeded: 1,
-                input: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 1 }, { SpecialCommodities.Work, 1 } },
-                output: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 1 }, { GetCommodity("milk"), 1 } }
-            );
-            commonTechnologies.Add(milkCow);
-
-            Technology reproduceCow = new Technology(
-                name: "reproduce cow",
-                labourNeeded: 2,
-                input: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 2 }, { SpecialCommodities.Work, 2 } },
-                output: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 3 } }
-            );
-            commonTechnologies.Add(reproduceCow);
+        private List<Company> CreateCompanies()
+        {
+            List<Company> companies = new List<Company>();
 
             Company biznesJanusza = new Company(
                 _name: "Biznes Janusza",
@@ -114,12 +63,86 @@ namespace Engine
                 _city: this,
                 _market: GetMarket("Hala Targowa")
             );
-            biznesJanusza.commodities = new Dictionary<Commodity, int>() { { grain, 20 } };
+
+            biznesJanusza.commodities = new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } };
             GetCitizen("Janusz").TransferMoney(biznesJanusza, 50.0M);
 
-            var sellAssistantJanusza = new SimpleSellAssistant(halaTargowa);
-            biznesJanusza.strategy = new SingleProductionStrategy(biznesJanusza, grainPlantation, sellAssistantJanusza);
+            var sellAssistantJanusza = new SimpleSellAssistant(GetMarket("Hala Targowa"));
+            biznesJanusza.strategy = new SingleProductionStrategy(
+                biznesJanusza, GetTechnology("grain plantation"), sellAssistantJanusza);
             companies.Add(biznesJanusza);
+
+            return companies;
+        }
+
+        private List<Technology> CreateTechnologies()
+        {
+            return new List<Technology>()
+            {
+                new Technology(
+                    name: "grain plantation",
+                    labourNeeded: 1,
+                    input: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 10 }, { SpecialCommodities.Work, 1 } },
+                    output: new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } }),
+                new Technology(
+                    name: "milk cow",
+                    labourNeeded: 1,
+                    input: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 1 }, { SpecialCommodities.Work, 1 } },
+                    output: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 1 }, { GetCommodity("milk"), 10 } }),
+                new Technology(
+                    name: "reproduce cow",
+                    labourNeeded: 2,
+                    input: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 2 }, { SpecialCommodities.Work, 2 } },
+                    output: new Dictionary<Commodity, int>() { { GetCommodity("cow"), 3 } })
+            };
+        }
+
+        private List<Commodity> CreateCommodities()
+        {
+            return new List<Commodity>()
+            {
+                new Commodity(name: "grain", need: GetNeed("hunger")),
+                new Commodity(name: "cow", need: null),
+                new Commodity(name: "milk", need: GetNeed("hunger")),
+                new Commodity(name: "meat", need: GetNeed("hunger"))
+            };
+        }
+
+        private List<Need> CreateNeeds()
+        {
+            return new List<Need>()
+            {
+                new Need(
+                    name: "hunger",
+                    enjoymentCurveFoo: new Func<int, double>(x => Math.Sqrt(Math.Sqrt(Convert.ToDouble(x)))))
+            };
+        }
+
+        private List<Market> CreateMarket()
+        {
+            return new List<Market>()
+            {
+                new Market("Hala Targowa", new DaySalesHistory())
+            };
+        }
+
+        private List<Citizen> CreateCitizens()
+        {
+            return new List<Citizen>()
+            {
+                new SimpleCitizen(
+                    name: "Janusz",
+                    money: 100,
+                    city: this,
+                    sellAssistant: new SimpleSellAssistant(GetMarket("Hala Targowa"))
+                ),
+                new SimpleCitizen(
+                    name: "Grażyna",
+                    money: 100,
+                    city: this,
+                    sellAssistant: new SimpleSellAssistant(GetMarket("Hala Targowa"))
+                )
+            };
         }
     }
 }
