@@ -51,7 +51,7 @@
     <Compile Include="Need.cs" />
     <Compile Include="MainClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SalesHistory\DaySalesHistory.cs" />
+    <Compile Include="SalesHistory\SimpleSalesHistory.cs" />
     <Compile Include="SalesHistory\SalesHistory.cs" />
     <Compile Include="SellAssistant\SellAssistant.cs" />
     <Compile Include="SellAssistant\SimpleSellAssistant.cs" />

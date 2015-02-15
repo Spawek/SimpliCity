@@ -5,14 +5,14 @@ using Engine;
 namespace EngineTests
 {
     [TestClass]
-    public class DaySalesHistoryTests : TestWithTimeCounter
+    public class SimpleSalesHistoryTests : TestWithTimeCounter
     {
         Commodity grain = new Commodity("grain", null);
 
         [TestMethod]
         public void DasySalesHistorySimpleTest()
         {
-            var history = new DaySalesHistory();
+            var history = new SimpleSalesHistory();
 
             // 1st day
             history.AddTodaySaleData(grain, 3, 9.0M);

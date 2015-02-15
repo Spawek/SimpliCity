@@ -56,7 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TechnologyTests.cs" />
     <Compile Include="SellOfferWithDiscountPerTurnTests.cs" />
-    <Compile Include="DaySalesHistoryTests.cs" />
+    <Compile Include="SimpleSalesHistoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj">

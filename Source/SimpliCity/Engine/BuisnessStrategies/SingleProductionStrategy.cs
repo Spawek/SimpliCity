@@ -24,8 +24,46 @@ namespace Engine
             int maxProductionPossible = GetMaxProductionSize(Company, Production);
             int productionSize = Math.Min(maxProductionPossible, WantedProductionSize);
 
-            BuyGoodsForProduction(Production, productionSize);
-            Produce(Production, productionSize);
+            var expectedProfit = GetExpectedProfit(productionSize);
+            if (!expectedProfit.HasValue || expectedProfit.Value > 0.0M)
+            {
+                BuyGoodsForProduction(Production, productionSize);
+                Produce(Production, productionSize);
+            }
+            else
+            {
+                Console.WriteLine(String.Format(
+                    "Company: {0} doesn't produce as it is not profitable", Company.Name));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commodities"></param>
+        /// <returns>null means it cannot calculate expected value</returns>
+        private decimal? PriceCommodities(IDictionary<Commodity, int> commodities)
+        {
+            var salesHistory = Company.Market.SalesHistory;
+
+            var intputs = commodities.Select(
+                x => salesHistory.GetAverageSellPrice(x.Key, TurnCounter.Now) * x.Value).ToList();
+
+            if (intputs.Any(x => !x.HasValue))
+                return null;
+
+            return intputs.Sum(x => x.Value);
+        }
+
+        /// <summary></summary>
+        /// <param name="productionSize"></param>
+        /// <returns>null means it cannot calculate expected profit</returns>
+        private decimal? GetExpectedProfit(int productionSize)
+        {
+            var totalInputCost = PriceCommodities(Production.Input);
+            var totalExpectedOutputProfit = PriceCommodities(Production.Output);
+
+            return totalExpectedOutputProfit - totalInputCost;
         }
 
         private void Produce(Technology production, int productionSize)

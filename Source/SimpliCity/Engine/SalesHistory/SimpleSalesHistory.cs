@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public class DaySalesHistory : SalesHistory
+    public class SimpleSalesHistory : SalesHistory
     {
         public void AddTodaySaleData(Commodity commodity, int ammount, decimal pricePerPiece)
         {

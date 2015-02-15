@@ -11,7 +11,6 @@ namespace EngineTests
         Company company = new Company("testCompany", null, null, null);
         Commodity inputGrain;
         Commodity outputGrain; // its not the same as input grain for test purposes
-        const int EMPLOYEES_NEEDED_ON_GRAIN_FARM = 0;
         const int GRAIN_NEEDED_TO_FARM = 2;
         const int GRAIN_GATHERED_FROM_FARM = 5;
         Technology grainFarm;
@@ -20,7 +19,7 @@ namespace EngineTests
         {
             inputGrain = new Commodity("input grain", null);
             outputGrain = new Commodity("output grain", null);
-            grainFarm = new Technology("testTechnology", EMPLOYEES_NEEDED_ON_GRAIN_FARM,
+            grainFarm = new Technology("testTechnology",
                 new Dictionary<Commodity, int>() { { inputGrain, GRAIN_NEEDED_TO_FARM } },
                 new Dictionary<Commodity, int>() { { outputGrain, GRAIN_GATHERED_FROM_FARM } });
         }

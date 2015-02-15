@@ -119,7 +119,7 @@ namespace Engine
         {
             return new List<Market>()
             {
-                new Market("Hala Targowa", new DaySalesHistory())
+                new Market("Hala Targowa", new SimpleSalesHistory())
             };
         }
 

@@ -10,7 +10,7 @@ namespace EngineTests
     {
         Commodity grain = new Commodity("grain", null);
         Commodity meat = new Commodity("meat", null);
-        Market market = new Market("Market1", new DaySalesHistory());
+        Market market = new Market("Market1", new SimpleSalesHistory());
         Company seller = new Company("seller", null, null, null);
         
         public MarketTests()
