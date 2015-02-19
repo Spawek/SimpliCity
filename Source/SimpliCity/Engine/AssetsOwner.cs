@@ -17,7 +17,7 @@ namespace Engine
 
         public decimal money { get; private set; }
         public IDictionary<Company, decimal> companyShares = new Dictionary<Company, decimal>();
-        public IDictionary<Commodity, int> commodities = new Dictionary<Commodity, int>();
+        public CommodityStorage commodityStorage = new CommodityStorage();
 
         public void TransferMoney(AssetsOwner other, decimal ammount)
         {

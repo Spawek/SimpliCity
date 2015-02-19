@@ -37,12 +37,7 @@ namespace Engine
             foreach (var item in Output)
             {
                 int commodityProduced = item.Value * times;
-
-                if (!company.commodities.ContainsKey(item.Key))
-                {
-                    company.commodities.Add(item.Key, 0);
-                }
-                company.commodities[item.Key] += commodityProduced;
+                company.commodityStorage.Deposit(item.Key, commodityProduced);
             }
         }
 
@@ -51,13 +46,7 @@ namespace Engine
             foreach (var item in Input)
             {
                 int commodityNeeded = item.Value * times;
-
-                if (!company.commodities.ContainsKey(item.Key))
-                    throw new ApplicationException();
-                if (company.commodities[item.Key] < commodityNeeded)
-                    throw new ApplicationException();
-
-                company.commodities[item.Key] -= commodityNeeded;
+                company.commodityStorage.Withdraw(item.Key, commodityNeeded);
             }
         }
     }

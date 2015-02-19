@@ -40,7 +40,7 @@ namespace Engine
         /// <summary></summary>
         /// <param name="commodities"></param>
         /// <returns>null means it cannot calculate expected value</returns>
-        private decimal? PriceCommoditiesByHistory(IDictionary<Commodity, int> commodities)
+        private decimal? PriceCommoditiesByHistory(IEnumerable<KeyValuePair<Commodity, int>> commodities)
         {
             var salesHistory = Company.Market.SalesHistory;
 
@@ -56,7 +56,7 @@ namespace Engine
         /// <summary></summary>
         /// <param name="commodities"></param>
         /// <returns>null means it cannot calculate expected price</returns>
-        private static decimal? GetMarketPrice(IDictionary<Commodity, int> commodities, Market market)
+        private static decimal? GetMarketPrice(IEnumerable<KeyValuePair<Commodity, int>> commodities, Market market)
         {
             var inputs = commodities.Select(
                 x => market.PriceBuyOffer(x.Key, x.Value));
@@ -89,7 +89,8 @@ namespace Engine
         {
             foreach (var item in production.Input)
             {
-                var storedCommodities = Company.commodities.ContainsKey(item.Key) ? Company.commodities[item.Key] : 0;
+
+                var storedCommodities = Company.commodityStorage[item.Key];
                 var countNeeded = item.Value * productionSize - storedCommodities;
                 if (countNeeded > 0)
                 {
@@ -99,11 +100,12 @@ namespace Engine
         }
 
         private static IDictionary<Commodity, int> GetCommoditiesNeededToBuyForProduction(
-            Technology technology, int productionSize, IDictionary<Commodity, int> storedCommodities)
+            Technology technology, int productionSize,
+            CommodityStorage commodityStorage)
         {
             return technology.Input.ToDictionary(
                 x => x.Key,
-                x => x.Value * productionSize - (storedCommodities.ContainsKey(x.Key) ? storedCommodities[x.Key] : 0));
+                x => x.Value * productionSize - commodityStorage[x.Key]);
         }
 
         // TODO: this needs to be rewritten, just made it work (but slowly) for now
@@ -114,14 +116,14 @@ namespace Engine
             foreach (var c in production.Input)
             {
                 var commodityAvailableOnMarket = market.GetCommodityAvailable(c.Key);
-                var storedCommodities = company.commodities.ContainsKey(c.Key) ? company.commodities[c.Key] : 0;
+                var storedCommodities = company.commodityStorage[c.Key];
                 var commodityAvailable = commodityAvailableOnMarket + storedCommodities;
                 maxProductionPossible = Math.Min(maxProductionPossible, commodityAvailable / c.Value);
             }
 
             // this 'algorithm' is really slow - TODO: find better one
             while (GetMarketPrice(
-                GetCommoditiesNeededToBuyForProduction(production, maxProductionPossible, company.commodities), 
+                GetCommoditiesNeededToBuyForProduction(production, maxProductionPossible, company.commodityStorage), 
                     company.Market) > company.money)
             {
                 maxProductionPossible--;
@@ -130,11 +132,12 @@ namespace Engine
             return maxProductionPossible;
         }
 
+        // TODO: rewrite it 
         protected override void SellAssets()
         {
-            foreach (Commodity commodity in Company.commodities.Keys.ToList())  // .ToList() is needed as list dictionary is being modified in here
+            foreach (Commodity commodity in Company.commodityStorage.Select(x => x.Key).ToList())
             {
-                int ammountPossessed = Company.commodities[commodity];
+                int ammountPossessed = Company.commodityStorage[commodity];
                 int ammountToSell = 0;
                 if (Production.Input.ContainsKey(commodity) && ammountPossessed > ammountToSell)
                 {

@@ -32,7 +32,7 @@ namespace Engine
         protected override void SellWork()
         {
             var work = SpecialCommodities.Work;
-            SellAssistant.SellAsset(this, work, this.commodities[work]);
+            SellAssistant.SellAsset(this, work, this.commodityStorage[work]);
         }
 
         private SellAssistant SellAssistant { get; set; }

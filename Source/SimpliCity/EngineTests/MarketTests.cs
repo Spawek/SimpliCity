@@ -15,7 +15,7 @@ namespace EngineTests
         
         public MarketTests()
         {
-            seller.commodities.Add(grain, 15);
+            seller.commodityStorage.Deposit(grain, 15);
 
             var grainSellOffer1 = new StableSellOffer(
                 ammount: 10,
@@ -56,7 +56,7 @@ namespace EngineTests
         [TestMethod]
         public void SellerShouldHaveCommodityTakenAfterPostingSellOffer()
         {
-            seller.commodities.Add(meat, 100);
+            seller.commodityStorage.Deposit(meat, 100);
 
             var meatSellOffer = new StableSellOffer(
                 ammount: 60,
@@ -65,9 +65,9 @@ namespace EngineTests
                 seller: seller
             );
 
-            Assert.AreEqual(100, seller.commodities[meat]);
+            Assert.AreEqual(100, seller.commodityStorage[meat]);
             market.AddSellOffer(meatSellOffer);
-            Assert.AreEqual(40, seller.commodities[meat]);
+            Assert.AreEqual(40, seller.commodityStorage[meat]);
         }
 
         [TestMethod]
@@ -80,7 +80,7 @@ namespace EngineTests
             market.MakeBuyOffer(grain, 10, buyer);
 
             Assert.AreEqual(35, buyer.money);
-            Assert.AreEqual(10, buyer.commodities[grain]);
+            Assert.AreEqual(10, buyer.commodityStorage[grain]);
             Assert.AreEqual(15, seller.money);
             Assert.AreEqual(5, market.GetCommodityAvailable(grain));
         }

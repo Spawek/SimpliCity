@@ -64,7 +64,7 @@ namespace Engine
                 _market: GetMarket("Hala Targowa")
             );
 
-            biznesJanusza.commodities = new Dictionary<Commodity, int>() { { GetCommodity("grain"), 20 } };
+            biznesJanusza.commodityStorage.Deposit(GetCommodity("grain"), 20);
             GetCitizen("Janusz").TransferMoney(biznesJanusza, 50.0M);
 
             var sellAssistantJanusza = new SimpleSellAssistant(GetMarket("Hala Targowa"));

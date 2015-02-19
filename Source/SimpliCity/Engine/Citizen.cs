@@ -28,12 +28,7 @@ namespace Engine
 
         public void CreateAndSellWork()
         {
-            var work = SpecialCommodities.Work;
-            if (!this.commodities.ContainsKey(work))
-            {
-                this.commodities.Add(work, 0);
-            }
-            this.commodities[work] += WORK_CREATED_PER_DAY;
+            this.commodityStorage.Deposit(SpecialCommodities.Work, WORK_CREATED_PER_DAY);
 
             SellWork();
         }

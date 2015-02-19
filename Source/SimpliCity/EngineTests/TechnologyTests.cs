@@ -29,11 +29,11 @@ namespace EngineTests
         {
             const int INITIAL_GRAIN = 5;
             const int TIMES_PRODUCED = 2;
-            company.commodities.Add(inputGrain, INITIAL_GRAIN);
+            company.commodityStorage.Deposit(inputGrain, INITIAL_GRAIN);
             grainFarm.Produce(company, TIMES_PRODUCED);
 
             int expectedGrainLeft = INITIAL_GRAIN - TIMES_PRODUCED * GRAIN_NEEDED_TO_FARM;
-            Assert.AreEqual(expectedGrainLeft, company.commodities[inputGrain]);
+            Assert.AreEqual(expectedGrainLeft, company.commodityStorage[inputGrain]);
         }
 
         //TODO - it should throw - i dont remember how to check it and i dont have internet
@@ -86,11 +86,11 @@ namespace EngineTests
             
             const int INITIAL_GRAIN = 5;
             const int TIMES_PRODUCED = 2;
-            company.commodities.Add(inputGrain, INITIAL_GRAIN);
+            company.commodityStorage.Deposit(inputGrain, INITIAL_GRAIN);
             grainFarm.Produce(company, TIMES_PRODUCED);
 
             int expectedOuputGrain = TIMES_PRODUCED * GRAIN_GATHERED_FROM_FARM;
-            Assert.AreEqual(expectedOuputGrain, company.commodities[outputGrain]);
+            Assert.AreEqual(expectedOuputGrain, company.commodityStorage[outputGrain]);
         }
     }
 }

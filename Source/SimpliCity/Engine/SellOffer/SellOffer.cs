@@ -31,14 +31,7 @@ namespace Engine
             decimal moneyToTransfer = PricePerPiece * Ammount;
             buyer.TransferMoney(Seller, moneyToTransfer);
 
-            if (!buyer.commodities.ContainsKey(Commodity))
-            {
-                buyer.commodities.Add(Commodity, Ammount);
-            }
-            else
-            {
-                buyer.commodities[Commodity] += Ammount;
-            }
+            buyer.commodityStorage.Deposit(Commodity, Ammount);
         }
 
         public void FinalizeOfferPartially(AssetsOwner buyer, int partialAmmount)  // TODO: test it!
@@ -50,12 +43,7 @@ namespace Engine
             buyer.TransferMoney(Seller, moneyToTransfer);
             Ammount -= partialAmmount;
 
-            if (!buyer.commodities.ContainsKey(Commodity))
-            {
-                buyer.commodities.Add(Commodity, 0);
-            }
-
-            buyer.commodities[Commodity] += partialAmmount;
+            buyer.commodityStorage.Deposit(Commodity, partialAmmount);
         }
     }
 }
