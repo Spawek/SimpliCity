@@ -36,54 +36,21 @@ namespace EngineTests
             Assert.AreEqual(expectedGrainLeft, company.commodityStorage[inputGrain]);
         }
 
-        //TODO - it should throw - i dont remember how to check it and i dont have internet
-        //[TestMethod]
-        //public void ProduceNeedsInput()
-        //{
-        //    const int INITIAL_GRAIN = 3;
-        //    const int TIMES_PRODUCED = 2;
-        //    company.commodities.Add(inputGrain, INITIAL_GRAIN);
-            
-        //    grainFarm.Produce(company, TIMES_PRODUCED);
 
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void produceneedsinput()
+        {
+            const int initial_grain = 3;
+            const int times_produced = 2;
+            company.commodityStorage.Deposit(inputGrain, initial_grain);
 
-        //}
-
-
-        //TODO: add test for checking if technology throws when there are no employees available
-
-        //NO IDEA HOW TO TEST IT - ITS COMPANY WHO MOVES EMPLOYES TO FREE ONES (mby use mocks?)
-        //[TestMethod]
-        //public void ProduceUsesEmployees()
-        //{
-        //    const int TIMES_PRODUCED = 2;
-        //    const int EMPLOYEES_NEEDED_ON_PEOPLE_GRAIN_FARM = 2;
-
-        //    var labourPlace = new Technology("testTechnology", EMPLOYEES_NEEDED_ON_PEOPLE_GRAIN_FARM,
-        //        new Dictionary<Commodity, int>(), new Dictionary<Commodity, int>());
-
-        //    Citizen a = new SimpleCitizen("a", null, 0);
-        //    Citizen b = new SimpleCitizen("b", null, 0);
-        //    Citizen c = new SimpleCitizen("c", null, 0);
-        //    Citizen d = new SimpleCitizen("d", null, 0);
-        //    Citizen e = new SimpleCitizen("e", null, 0);
-
-
-        //    company.Hire(a, 0);
-        //    company.Hire(b, 0);
-        //    company.Hire(c, 0);
-        //    company.Hire(d, 0);
-        //    company.Hire(e, 0);
-
-        //    labourPlace.Produce(company, TIMES_PRODUCED);
-
-        //    Assert.AreEqual(1, company.FreeEmployees.Count);
-        //}
+            grainFarm.Produce(company, times_produced);
+        }
 
         [TestMethod]
         public void ProeducesGivesOutput()
         {
-            
             const int INITIAL_GRAIN = 5;
             const int TIMES_PRODUCED = 2;
             company.commodityStorage.Deposit(inputGrain, INITIAL_GRAIN);

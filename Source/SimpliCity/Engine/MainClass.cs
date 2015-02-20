@@ -9,7 +9,7 @@ namespace Engine
     /*
      * BUGS:
      *  - when during last day there was no commodity sold - last price is default price
-     * - there is some problem with pricing seen during simulation (price going down to 0) - test pricer module
+     *  - there is some problem with pricing seen during simulation (price going down to 0) - test pricer module
      * 
      * IDEAS:
      *  - commodities can get lost when stored too long (work after 1 turn),
@@ -17,10 +17,8 @@ namespace Engine
      *      (i dont know if its good idea) 
      * 
      * FOR NOW TODO:
-     * - add commodity storage (will be easier to use if override operator [])
      * - what is now sell offer - should be asset owner either
      * - optimize market - its really shitty
-     * - uncomment technology tests
      * - job market
      * - needs
      * - companies creation
