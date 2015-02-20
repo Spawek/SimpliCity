@@ -62,22 +62,24 @@ namespace Engine
 
         private static void MakeTurn(City simpliCity)
         {
-            foreach (var c in simpliCity.citizens)
+            foreach (var c in simpliCity.citizens.OrderBy(x => rand.Next()))
             {
                 c.CreateAndSellWork();
             }
 
-            foreach (var c in simpliCity.companies)
+            foreach (var c in simpliCity.companies.OrderBy(x => rand.Next()))
             {
                 c.BuyAndProduce();
                 c.SellAssets();
                 c.PayDidivend();
             }
 
-            foreach (var c in simpliCity.citizens)
+            foreach (var c in simpliCity.citizens.OrderBy(x => rand.Next()))
             {
                 c.BuyAndConsume();
             }
         }
+
+        private static Random rand = new Random(12344321);  // seed is given so app is deterministic
     }
 }

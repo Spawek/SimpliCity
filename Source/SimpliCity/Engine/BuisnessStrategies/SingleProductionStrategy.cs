@@ -82,7 +82,8 @@ namespace Engine
 
         private void Produce(Technology production, int productionSize)
         {
-            production.Produce(Company, productionSize);
+            if (productionSize > 0)
+                production.Produce(Company, productionSize);
         }
 
         private void BuyGoodsForProduction(Technology production, int productionSize)
