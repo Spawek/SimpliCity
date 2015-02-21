@@ -42,7 +42,7 @@ namespace Engine
 
             if (!historicData[date].ContainsKey(commodity))
             {
-                historicData[date].Add(commodity, new AmmountPrice(ammount, pricePerPiece));
+                historicData[date].Add(commodity, new AmmountPrice(ammount, pricePerPiece * ammount));
             }
             else
             {
