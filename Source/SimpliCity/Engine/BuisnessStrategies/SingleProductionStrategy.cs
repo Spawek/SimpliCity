@@ -36,7 +36,7 @@ namespace Engine
                 }
             }
 
-            if (!expectedProfit.HasValue || expectedProfit.Value > 0.0M)
+            if (expectedProfit > 0.0M)
             {
                 BuyGoodsForProduction(Production, productionSize);
                 Produce(Production, productionSize);
@@ -48,47 +48,51 @@ namespace Engine
             }
         }
 
-        /// <summary></summary>
-        /// <param name="commodities"></param>
-        /// <returns>null means it cannot calculate expected value</returns>
-        private decimal? PriceCommoditiesByHistory(IEnumerable<KeyValuePair<Commodity, int>> commodities)
+        private decimal PriceCommoditiesByHistory(IEnumerable<KeyValuePair<Commodity, int>> commodities)
         {
             var salesHistory = Company.Market.SalesHistory;
 
             var intputs = commodities.Select(
-                x => salesHistory.GetAverageSellPrice(x.Key, TurnCounter.Now) * x.Value).ToList();
+                x => salesHistory.GetActualPrice(x.Key) * x.Value).ToList();
 
-            if (intputs.Any(x => !x.HasValue))
-                return null;
-
-            return intputs.Sum(x => x.Value);
+            return intputs.Sum();
         }
 
-        /// <summary></summary>
-        /// <param name="commodities"></param>
-        /// <returns>null means it cannot calculate expected price</returns>
-        private static decimal? GetMarketPrice(IEnumerable<KeyValuePair<Commodity, int>> commodities, Market market)
+        private static decimal GetMarketPrice(IEnumerable<KeyValuePair<Commodity, int>> commodities, Market market)
         {
             var inputs = commodities.Select(
-                x => market.PriceBuyOffer(x.Key, x.Value));
+                x => market.PriceBuyOffer(x.Key, x.Value)).ToList();
 
             if (inputs.Any(x => !x.HasValue))
-                return null;
+                throw new ApplicationException();
 
             return inputs.Sum(x => x.Value);
         }
 
-        /// <summary></summary>
-        /// <param name="productionSize"></param>
-        /// <returns>null means it cannot calculate expected profit</returns>
-        private decimal? GetExpectedProfit(int productionSize)
+        private decimal GetExpectedProfit(int productionSize)
         {
-            var totalInputCost = GetMarketPrice(Production.Input, Company.Market);
-            var totalExpectedOutputProfit = PriceCommoditiesByHistory(Production.Output);
-            if (!totalExpectedOutputProfit.HasValue)
-                return null;
+            var neededMaterials = Production.Input.ToDictionary(
+                x => x.Key,
+                x => x.Value * productionSize);
+            var commodityToUseFromStorage = new Dictionary<Commodity, int>(); // HAAACK! //TODO: rewrite it - write method splitting needed goods to from storage and needed to buy
+            var materialsNeededToBuy = neededMaterials.ToDictionary(
+                x => x.Key,
+                x => 
+                { 
+                    var needed = x.Value - Company.commodityStorage[x.Key];
+                    commodityToUseFromStorage.Add(x.Key, x.Value - needed); 
+                    return needed > 0 ? needed : 0;
+                });
+            var commoditiesToBuyCost = GetMarketPrice(materialsNeededToBuy, Company.Market);
+            var commoditiesUsedFromStorageValue = PriceCommoditiesByHistory(commodityToUseFromStorage);
+            var todalInputCost = commoditiesToBuyCost + commoditiesUsedFromStorageValue;
 
-            return totalExpectedOutputProfit - totalInputCost;
+            var productionOutput = Production.Output.ToDictionary(
+                x => x.Key,
+                x => x.Value * productionSize);
+            var totalExpectedOutputProfit = PriceCommoditiesByHistory(productionOutput);
+
+            return totalExpectedOutputProfit - todalInputCost;
         }
 
         private void Produce(Technology production, int productionSize)

@@ -17,6 +17,7 @@ namespace Engine
      *      (i dont know if its good idea) 
      * 
      * FOR NOW TODO:
+     * - add commodity bundles - needed in SimpleProductionStrategy
      * - what is now sell offer - should be asset owner either
      * - optimize market - its really shitty
      * - job market
