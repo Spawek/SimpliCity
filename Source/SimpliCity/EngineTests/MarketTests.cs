@@ -10,11 +10,19 @@ namespace EngineTests
     {
         Commodity grain = new Commodity("grain", null);
         Commodity meat = new Commodity("meat", null);
-        Market market = new Market("Market1", new SimpleSalesHistory());
+        Market market;
         Company seller = new Company("seller", null, null, null);
         
         public MarketTests()
         {
+            var defaultPrices = new Dictionary<Commodity, decimal>()
+            {
+                { grain, 4 },
+                { meat, 5 }
+            };
+
+            market = new Market("Market1", new SimpleSalesHistory(defaultPrices));
+
             seller.commodityStorage.Deposit(grain, 15);
 
             var grainSellOffer1 = new StableSellOffer(

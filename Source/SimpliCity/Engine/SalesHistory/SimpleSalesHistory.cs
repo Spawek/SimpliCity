@@ -8,6 +8,14 @@ namespace Engine
 {
     public class SimpleSalesHistory : SalesHistory
     {
+        public SimpleSalesHistory(IDictionary<Commodity, decimal> defaultPrices)
+        {
+            foreach (var item in defaultPrices)
+            {
+                actualPrices.Add(item.Key, new DateLowHigh(0, item.Value, item.Value));
+            }
+        }
+
         public void AddTodaySaleData(Commodity commodity, int ammount, decimal pricePerPiece)
         {
             AddSellData(commodity, ammount, pricePerPiece, TurnCounter.Now);
@@ -15,16 +23,30 @@ namespace Engine
 
         private void AddSellData(Commodity commodity, int ammount, decimal pricePerPiece, int date)
         {
-            if (!data.ContainsKey(date))
-                data.Add(date, new Dictionary<Commodity, AmmountPrice>());
+            AddSellDataToHistoricData(commodity, ammount, pricePerPiece, date);
+            AddSellDataToActualPrices(commodity, pricePerPiece, date);
+        }
 
-            if (!data[date].ContainsKey(commodity))
+        private void AddSellDataToActualPrices(Commodity commodity, decimal pricePerPiece, int date)
+        {
+            if (!actualPrices.ContainsKey(commodity))
+                throw new ApplicationException();
+
+            actualPrices[commodity].Update(date, pricePerPiece);
+        }
+
+        private void AddSellDataToHistoricData(Commodity commodity, int ammount, decimal pricePerPiece, int date)
+        {
+            if (!historicData.ContainsKey(date))
+                historicData.Add(date, new Dictionary<Commodity, AmmountPrice>());
+
+            if (!historicData[date].ContainsKey(commodity))
             {
-                data[date].Add(commodity, new AmmountPrice(ammount, pricePerPiece));
+                historicData[date].Add(commodity, new AmmountPrice(ammount, pricePerPiece));
             }
             else
             {
-                var ammountPrice = data[date][commodity];
+                var ammountPrice = historicData[date][commodity];
                 ammountPrice.ammount += ammount;
                 ammountPrice.totalPrice += pricePerPiece * ammount;
             }
@@ -32,13 +54,19 @@ namespace Engine
 
         public decimal? GetAverageSellPrice(Commodity commodity, int date)
         {
-            if (!data.ContainsKey(date))
+            if (!historicData.ContainsKey(date))
                 return null;
-            if (!data[date].ContainsKey(commodity))
+            if (!historicData[date].ContainsKey(commodity))
                 return null;
 
-            var ammountPrice = data[date][commodity];
+            var ammountPrice = historicData[date][commodity];
             return (decimal)ammountPrice.totalPrice / ammountPrice.ammount;
+        }
+
+        public decimal GetActualPrice(Commodity commodity)
+        {
+            var commodityPrice = actualPrices[commodity];
+            return (commodityPrice.Low + commodityPrice.High) / 2;
         }
 
         private class AmmountPrice
@@ -53,6 +81,45 @@ namespace Engine
             public decimal totalPrice;
         }
 
-        private IDictionary<int, IDictionary<Commodity, AmmountPrice>> data = new Dictionary<int, IDictionary<Commodity, AmmountPrice>>();
+        private class DateLowHigh
+        {
+            public DateLowHigh(int newestTradeDate, decimal low, decimal high)
+            {
+                NewestTradeDate = newestTradeDate;
+                Low = low;
+                High = high;
+            }
+
+            /// <summary>
+            /// updates object using new trade date (its date and price)
+            /// </summary>
+            /// <param name="newestTradeDate"></param>
+            /// <param name="pricePerPiece"></param>
+            public void Update(int newestTradeDate, decimal pricePerPiece)
+            {
+                if (NewestTradeDate < newestTradeDate)
+                {
+                    Low = pricePerPiece;
+                    High = pricePerPiece;
+                    NewestTradeDate = newestTradeDate;
+                }
+                if (NewestTradeDate == newestTradeDate)
+                {
+                    Low = Math.Min(Low, pricePerPiece);
+                    High = Math.Max(High, pricePerPiece);
+                }
+                else
+                {
+                    throw new ApplicationException();
+                }
+            }
+
+            public int NewestTradeDate { get; private set; }
+            public decimal Low { get; private set; }
+            public decimal High { get; private set; }
+        }
+
+        private IDictionary<int, IDictionary<Commodity, AmmountPrice>> historicData = new Dictionary<int, IDictionary<Commodity, AmmountPrice>>();
+        private IDictionary<Commodity, DateLowHigh> actualPrices = new Dictionary<Commodity, DateLowHigh>();
     }
 }

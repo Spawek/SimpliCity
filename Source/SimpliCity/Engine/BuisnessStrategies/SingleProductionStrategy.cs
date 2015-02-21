@@ -23,8 +23,19 @@ namespace Engine
         {
             int maxProductionPossible = GetMaxProductionSize(Company, Production);
             int productionSize = Math.Min(maxProductionPossible, WantedProductionSize);
-
             var expectedProfit = GetExpectedProfit(productionSize);
+
+            if (expectedProfit > 0 && maxProductionPossible > WantedProductionSize)
+            {
+                int increasedProductionSize = productionSize + 1;
+                var expectedIncreasedProductionProfit = GetExpectedProfit(increasedProductionSize);
+                if (expectedIncreasedProductionProfit > expectedProfit)
+                {
+                    productionSize++;
+                    WantedProductionSize++;
+                }
+            }
+
             if (!expectedProfit.HasValue || expectedProfit.Value > 0.0M)
             {
                 BuyGoodsForProduction(Production, productionSize);

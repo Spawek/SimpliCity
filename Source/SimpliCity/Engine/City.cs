@@ -45,10 +45,11 @@ namespace Engine
         /// </summary>
         public City()
         {
-            markets.AddRange(CreateMarket());
+            commodities.AddRange(CreateCommodities());
+            var defaultPrices = CreateDefaultPrices();
+            markets.AddRange(CreateMarket(defaultPrices));
             citizens.AddRange(CreateCitizens());
             needs.AddRange(CreateNeeds());
-            commodities.AddRange(CreateCommodities());
             commonTechnologies.AddRange(CreateTechnologies());
             companies.AddRange(CreateCompanies()); // to be removed (mby?) - companies should be created by citizens, not scripted
         }
@@ -115,11 +116,23 @@ namespace Engine
             };
         }
 
-        private List<Market> CreateMarket()
+        private List<Market> CreateMarket(IDictionary<Commodity, decimal> defaultPrices)
         {
             return new List<Market>()
             {
-                new Market("Hala Targowa", new SimpleSalesHistory())
+                new Market("Hala Targowa", new SimpleSalesHistory(defaultPrices))
+            };
+        }
+
+        private IDictionary<Commodity, decimal> CreateDefaultPrices()
+        {
+            return new Dictionary<Commodity, decimal>()
+            {
+                { SpecialCommodities.Work, 10 },
+                { GetCommodity("grain"), 4 },
+                { GetCommodity("cow"), 20 },
+                { GetCommodity("milk"), 4 },
+                { GetCommodity("meat"), 10 },
             };
         }
 
